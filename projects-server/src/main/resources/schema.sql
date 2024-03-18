@@ -1,7 +1,7 @@
 -- Initialises the database schema, creating the tables
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS interested_in;
+DROP TABLE IF EXISTS projects;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     username VARCHAR(250) PRIMARY KEY,

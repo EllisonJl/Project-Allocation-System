@@ -1,0 +1,9 @@
+package uk.ac.standrews.cs5031.group4.projectsserver.repository;
+
+import org.springframework.data.repository.CrudRepository;
+
+import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
+
+public interface UserRepository extends CrudRepository<User, String> {
+    // JPA automatically instantiates this interface to interact with the database
+}

@@ -17,7 +17,12 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(
-                (requests) -> requests.requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll());
+                (requests) -> requests
+                        // allow access to the H2 database console without logging in
+                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                        // allow access to all routes without auth
+                        // NOTE: this is enabled temporarily before login is implemented.
+                        .anyRequest().permitAll());
 
         httpSecurity.headers((headers) -> headers.frameOptions((opts) -> opts.disable()));
 

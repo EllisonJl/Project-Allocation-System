@@ -14,6 +14,8 @@ import jakarta.persistence.Table;
 public class User {
     @Id
     private String username;
+    @JsonIgnore
+    private String password_hash;
     private String name;
     private String role;
 
@@ -35,6 +37,10 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getPassword() {
+        return password_hash;
     }
 
     public String getName() {

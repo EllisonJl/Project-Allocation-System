@@ -32,6 +32,11 @@ public class ProjectsServerApplication {
         return "Hello world!";
     }
 
+    @GetMapping("/secret")
+    public String secret() {
+        return "Top secret!";
+    }
+
     /**
      * A sample request that gets data from the user repository.
      * TODO: remove this once we write the actual queries we need.

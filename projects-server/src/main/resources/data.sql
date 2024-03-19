@@ -8,5 +8,8 @@ INSERT INTO users (username, password_hash, name, role) VALUES
 INSERT INTO projects (name, description, proposed_by) VALUES
     ('Foobar Gigatron', 'This project aims to extend the Foobar project to add Gigatron features. This will include supporting new requests to the Gizmobot.', 'jbloggs');
 
+INSERT INTO projects (name, description, proposed_by, assigned_to) VALUES
+    ('SkyNet', 'Revolutionary AI-driven cloud management platform.', 'jbloggs', 'mm20');
+
 INSERT INTO interested_in (student_username, project_id) VALUES
     ('mm20', (SELECT id FROM projects WHERE name = 'Foobar Gigatron'));

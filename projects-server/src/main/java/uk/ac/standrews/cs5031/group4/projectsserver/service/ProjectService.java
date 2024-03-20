@@ -3,7 +3,6 @@ package uk.ac.standrews.cs5031.group4.projectsserver.service;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedIn;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedInId;

@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs5031.group4.projectsserver.auth;
+package uk.ac.standrews.cs5031.group4.projectsserver.service;
 
 import java.util.Optional;
 
@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import uk.ac.standrews.cs5031.group4.projectsserver.entities.UserDetailsImpl;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
 import uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;
 

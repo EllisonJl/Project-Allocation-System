@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs5031.group4.projectsserver.auth;
+package uk.ac.standrews.cs5031.group4.projectsserver.controller;
 
 public class LoginResponseBody {
     private String token;

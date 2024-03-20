@@ -17,8 +17,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import uk.ac.standrews.cs5031.group4.projectsserver.auth.JwtAuthFilter;
-import uk.ac.standrews.cs5031.group4.projectsserver.auth.UserDetailsServiceImpl;
+import uk.ac.standrews.cs5031.group4.projectsserver.filters.JwtAuthFilter;
+import uk.ac.standrews.cs5031.group4.projectsserver.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity

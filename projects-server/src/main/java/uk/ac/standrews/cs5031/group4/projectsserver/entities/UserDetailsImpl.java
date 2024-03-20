@@ -1,12 +1,10 @@
-package uk.ac.standrews.cs5031.group4.projectsserver.auth;
+package uk.ac.standrews.cs5031.group4.projectsserver.entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
 
 public class UserDetailsImpl extends User implements UserDetails {
     private String username;

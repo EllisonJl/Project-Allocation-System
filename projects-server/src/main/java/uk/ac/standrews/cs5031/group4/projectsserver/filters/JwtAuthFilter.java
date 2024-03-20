@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs5031.group4.projectsserver.auth;
+package uk.ac.standrews.cs5031.group4.projectsserver.filters;
 
 import java.io.IOException;
 
@@ -14,6 +14,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import uk.ac.standrews.cs5031.group4.projectsserver.service.JwtService;
+import uk.ac.standrews.cs5031.group4.projectsserver.service.UserDetailsServiceImpl;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {

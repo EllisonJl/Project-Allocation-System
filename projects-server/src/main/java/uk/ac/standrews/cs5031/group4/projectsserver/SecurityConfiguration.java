@@ -30,7 +30,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // .addFilterAt(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(
                         (requests) -> requests
                                 // allow access to the H2 database console without logging in

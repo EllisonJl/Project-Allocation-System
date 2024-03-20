@@ -1,12 +1,13 @@
 package uk.ac.standrews.cs5031.group4.projectsserver.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.Project;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.ProjectService;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +18,9 @@ public class ProjectController {
     private ProjectService projectService;
 
     @PostMapping("/register-interest")
-    public ResponseEntity<?> registerInterest(@RequestBody Map<String, Object> payload, Principal principal) {
+    public ResponseEntity<?> registerInterest(@RequestBody Map<String, Object> payload, Authentication auth) {
         // Get the username of the currently logged in user from the SecurityContext.
-//        String username = principal.getName();
-        String username = "mm20";
+        String username = auth.getName();
         // Get project_id from request body
         int projectId = (Integer) payload.get("project_id");
         try {
@@ -38,9 +38,8 @@ public class ProjectController {
     }
 
     @GetMapping("/proposed-projects")
-    public ResponseEntity<List<Project>> getProposedProjects(Principal principal) {
-        //String username = principal.getName();
-        String username = "jbloggs";
+    public ResponseEntity<List<Project>> getProposedProjects(Authentication auth) {
+        String username = auth.getName();
         try {
             List<Project> projects = projectService.getProjectsProposedByStaff(username);
             return ResponseEntity.ok(projects);

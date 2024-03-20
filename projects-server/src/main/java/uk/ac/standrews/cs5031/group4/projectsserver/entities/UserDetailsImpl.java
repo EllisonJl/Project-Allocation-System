@@ -20,8 +20,8 @@ public class UserDetailsImpl extends User implements UserDetails {
         username = user.getUsername();
         password = user.getPassword();
 
-        // grant the "STUDENT" or "STAFF" role
-        GrantedAuthority role = new SimpleGrantedAuthority(user.getRole().toUpperCase());
+        // grant the "student" or "staff" role
+        GrantedAuthority role = new SimpleGrantedAuthority(user.getRole());
         ArrayList<GrantedAuthority> auths = new ArrayList<>();
         auths.add(role);
         authorities = auths;

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
+import uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.JwtService;
 
 @RestController
@@ -19,6 +21,9 @@ public class LoginController {
      */
     @Autowired
     private AuthenticationManager authManager;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * The JWT service used to generate an auth token for the user.
@@ -33,7 +38,11 @@ public class LoginController {
                 new UsernamePasswordAuthenticationToken(requestBody.getUsername(), requestBody.getPassword()));
 
         if (auth.isAuthenticated()) {
-            LoginResponseBody response = new LoginResponseBody(jwtService.generateToken(requestBody.getUsername()));
+            // get the User object for the user who just authenticated
+            User user = userRepository.findById(auth.getName()).orElseThrow(
+                    () -> new IllegalStateException("The user must exist since we authenticated successfully."));
+            LoginResponseBody response = new LoginResponseBody(jwtService.generateToken(requestBody.getUsername()),
+                    user.getName(), user.getRole());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

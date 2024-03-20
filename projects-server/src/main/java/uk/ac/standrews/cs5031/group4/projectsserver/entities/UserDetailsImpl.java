@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -18,7 +19,12 @@ public class UserDetailsImpl extends User implements UserDetails {
     public UserDetailsImpl(User user) {
         username = user.getUsername();
         password = user.getPassword();
-        authorities = new ArrayList<>();
+
+        // grant the "STUDENT" or "STAFF" role
+        GrantedAuthority role = new SimpleGrantedAuthority(user.getRole().toUpperCase());
+        ArrayList<GrantedAuthority> auths = new ArrayList<>();
+        auths.add(role);
+        authorities = auths;
     }
 
     @Override

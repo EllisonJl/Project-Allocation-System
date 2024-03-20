@@ -16,6 +16,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * Service for generating and parsing JWT tokens.
+ */
 @Component
 public class JwtService {
     /**

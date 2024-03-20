@@ -12,6 +12,9 @@ import uk.ac.standrews.cs5031.group4.projectsserver.entities.UserDetailsImpl;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
 import uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;
 
+/**
+ * Service for loading user details for authentication.
+ */
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired

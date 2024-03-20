@@ -6,6 +6,10 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * Concrete implementation of the UserDetails interface. This is used for
+ * retrieving user details in the JwtAuthFilter.
+ */
 public class UserDetailsImpl extends User implements UserDetails {
     private String username;
     private String password;

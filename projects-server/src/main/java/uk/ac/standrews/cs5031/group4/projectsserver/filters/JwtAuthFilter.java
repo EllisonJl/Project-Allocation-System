@@ -17,6 +17,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.JwtService;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.UserDetailsServiceImpl;
 
+/**
+ * Request filter that checks for the Authorization header, to make sure the
+ * user is logged in.
+ */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired

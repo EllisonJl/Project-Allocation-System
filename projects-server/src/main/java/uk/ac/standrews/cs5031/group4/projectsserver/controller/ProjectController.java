@@ -3,8 +3,10 @@ package uk.ac.standrews.cs5031.group4.projectsserver.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.Project;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.ProjectService;
 
@@ -18,6 +20,7 @@ public class ProjectController {
     private ProjectService projectService;
 
     @PostMapping("/register-interest")
+    @Secured("student")
     public ResponseEntity<?> registerInterest(@RequestBody Map<String, Object> payload, Authentication auth) {
         // Get the username of the currently logged in user from the SecurityContext.
         String username = auth.getName();
@@ -38,6 +41,7 @@ public class ProjectController {
     }
 
     @GetMapping("/proposed-projects")
+    @Secured("staff")
     public ResponseEntity<List<Project>> getProposedProjects(Authentication auth) {
         String username = auth.getName();
         try {

@@ -1,14 +1,18 @@
 package uk.ac.standrews.cs5031.group4.projectsserver.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.Project;
+import uk.ac.standrews.cs5031.group4.projectsserver.repository.ProjectRepository;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.ProjectService;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class ProjectController {
@@ -16,10 +20,37 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    ProjectRepository projectRepository;
+
+    @GetMapping("/available-projects")
+    public ResponseEntity<List<Project>> getAvailableProjects() {
+        List<Project> availableProjects = new ArrayList<>();
+
+        if (projectRepository.findByAssignedStudentIsNull().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            availableProjects = projectRepository.findByAssignedStudentIsNull(); // fetches all the projects which
+                                                                                 // hasn't been assigned to anyone.
+            return ResponseEntity.ok(availableProjects);
+        }
+    }
+
+    @GetMapping("/projects/{id}")
+    public ResponseEntity<Project> getProjectById(@PathVariable String id) {
+        Optional<Project> requiredProject = projectRepository.findById(id);
+
+        if (requiredProject.isPresent()) {
+            return ResponseEntity.ok(requiredProject.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/register-interest")
     public ResponseEntity<?> registerInterest(@RequestBody Map<String, Object> payload, Principal principal) {
         // Get the username of the currently logged in user from the SecurityContext.
-//        String username = principal.getName();
+        // String username = principal.getName();
         String username = "mm20";
         // Get project_id from request body
         int projectId = (Integer) payload.get("project_id");
@@ -39,7 +70,7 @@ public class ProjectController {
 
     @GetMapping("/proposed-projects")
     public ResponseEntity<List<Project>> getProposedProjects(Principal principal) {
-        //String username = principal.getName();
+        // String username = principal.getName();
         String username = "jbloggs";
         try {
             List<Project> projects = projectService.getProjectsProposedByStaff(username);

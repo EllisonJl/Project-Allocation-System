@@ -1,8 +1,6 @@
-package uk.ac.standrews.cs5031.group4.projectsserver.controllers;
+package uk.ac.standrews.cs5031.group4.projectsserver.controller;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

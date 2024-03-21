@@ -35,6 +35,13 @@ public class User {
         this.role = role;
     }
 
+    public User(String username, String password_hash, String name, String role) {
+        this.username = username;
+        this.password_hash = password_hash;
+        this.name = name;
+        this.role = role;
+    }
+
     public String getUsername() {
         return username;
     }

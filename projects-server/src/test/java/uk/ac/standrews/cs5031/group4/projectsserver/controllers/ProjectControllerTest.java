@@ -55,4 +55,26 @@ class ProjectControllerTest {
         System.out.println(responseEntity.getBody());
         verify(projectRepository,Mockito.times(2)).findByAssignedStudentIsNull(); // the function is actually called two times. One is to check if the project repo is empty and other is to get the list of students
     }
+
+    @Test
+    void getProjectByIdWhenProjectIsPresent(){
+        Project expectedProject = new Project("Foobar", "This project aims to extend the Foobar project to add Gigatron features.", new User("jbloggs", "Joe Bloggs", "staff"),null);
+        int projectId = expectedProject.getId();
+        when(projectRepository.findById(Integer.toString(projectId))).thenReturn(Optional.of(expectedProject));
+
+        ResponseEntity<Project> responseEntity = projectController.getProjectById(Integer.toString(projectId));
+        System.out.println(responseEntity.getBody());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(expectedProject, responseEntity.getBody());
+    }
+
+    @Test
+    void getProjectByIdWhenProjectIsNotPresent(){
+        int invalidId = 21;
+        when(projectRepository.findById(Integer.toString(invalidId))).thenReturn(Optional.empty());
+
+        ResponseEntity<Project> responseEntity = projectController.getProjectById(Integer.toString(invalidId));
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+    }
 }

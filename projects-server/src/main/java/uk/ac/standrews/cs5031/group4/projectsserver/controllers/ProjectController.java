@@ -10,6 +10,7 @@ import uk.ac.standrews.cs5031.group4.projectsserver.repository.ProjectRepository
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ProjectController {
@@ -26,6 +27,17 @@ public class ProjectController {
         } else {
             availableProjects = projectRepository.findByAssignedStudentIsNull(); //fetches all the projects which hasn't been assigned to anyone.
             return ResponseEntity.ok(availableProjects);
+        }
+    }
+
+    @GetMapping("/projects/{id}")
+    public ResponseEntity<Project> getProjectById(@PathVariable String id){
+        Optional<Project> requiredProject = projectRepository.findById(id);
+
+        if (requiredProject.isPresent()){
+            return ResponseEntity.ok(requiredProject.get());
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

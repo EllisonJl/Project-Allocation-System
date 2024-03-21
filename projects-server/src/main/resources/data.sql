@@ -16,5 +16,8 @@ INSERT INTO projects (name, description, proposed_by) VALUES
     ('Eco-Friendly Solutions', 'The project is dedicated to creating eco-friendly, sustainable energy solutions for small to medium-sized enterprises.', 'zsw');
 
 
+INSERT INTO projects (name, description, proposed_by, assigned_to) VALUES
+    ('SkyNet', 'Revolutionary AI-driven cloud management platform.', 'jbloggs', 'mm20');
+
 INSERT INTO interested_in (student_username, project_id) VALUES
     ('mm20', (SELECT id FROM projects WHERE name = 'Foobar Gigatron'));

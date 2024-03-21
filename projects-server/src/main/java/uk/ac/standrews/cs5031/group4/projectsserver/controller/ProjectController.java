@@ -8,16 +8,46 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.Project;
+import uk.ac.standrews.cs5031.group4.projectsserver.repository.ProjectRepository;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.ProjectService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    ProjectRepository projectRepository;
+
+    @GetMapping("/available-projects")
+    public ResponseEntity<List<Project>> getAvailableProjects() {
+        List<Project> availableProjects = new ArrayList<>();
+
+        if (projectRepository.findByAssignedStudentIsNull().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            availableProjects = projectRepository.findByAssignedStudentIsNull(); // fetches all the projects which
+                                                                                 // hasn't been assigned to anyone.
+            return ResponseEntity.ok(availableProjects);
+        }
+    }
+
+    @GetMapping("/projects/{id}")
+    public ResponseEntity<Project> getProjectById(@PathVariable String id) {
+        Optional<Project> requiredProject = projectRepository.findById(id);
+
+        if (requiredProject.isPresent()) {
+            return ResponseEntity.ok(requiredProject.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping("/register-interest")
     @Secured("student")

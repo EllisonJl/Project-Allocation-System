@@ -54,6 +54,3 @@ test:jdk17:
     stage: test
     script:
         - "cd projects-server && mvn $MAVEN_CLI_OPTS test"
-    only:
-        variables:
-            - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

@@ -3,7 +3,6 @@ package uk.ac.standrews.cs5031.group4.projectsserver.service;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedIn;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedInId;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.Project;
@@ -26,10 +25,11 @@ public class ProjectService {
     @Autowired
     private InterestedInRepository interestedInRepository;
 
-    @Transactional
     public void registerStudentInterest(String username, int projectId) {
-        User student = userRepository.findById(username).orElseThrow(() -> new IllegalStateException("User does not exist"));
-        Project project = projectRepository.findById(String.valueOf(projectId)).orElseThrow(() -> new IllegalStateException("Project does not exist"));
+        User student = userRepository.findById(username)
+                .orElseThrow(() -> new IllegalStateException("User does not exist"));
+        Project project = projectRepository.findById(String.valueOf(projectId))
+                .orElseThrow(() -> new IllegalStateException("Project does not exist"));
         InterestedInId id = new InterestedInId();
         id.setStudent(username);
         id.setProject(projectId);
@@ -43,18 +43,20 @@ public class ProjectService {
     }
 
     public List<Project> getProjectsProposedByStaff(String username) {
-        // Call the repository method directly to get all the items proposed by the faculty member
+        // Call the repository method directly to get all the items proposed by the
+        // faculty member
         List<Project> projects = projectRepository.findByProposedByStaffUsername(username);
 
         return projects;
     }
-    @Transactional
+
     public Project proposeProject(String name, String description, String username) {
         User user = userRepository.findById(username).orElseThrow(() -> new IllegalStateException("User not found"));
         Project project = new Project(name, description, user);
-        return projectRepository.save(project);
+        Project result = projectRepository.save(project);
+        return result;
     }
-    @Transactional
+
     public void acceptStudent(int projectId, String studentUsername) {
         Project project = projectRepository.findById(String.valueOf(projectId))
                 .orElseThrow(() -> new IllegalStateException("Project does not exist"));
@@ -63,7 +65,8 @@ public class ProjectService {
             throw new IllegalStateException("Project is already assigned");
         }
 
-        boolean interestRegistered = interestedInRepository.findByStudentUsernameAndProjectId(studentUsername, projectId).isPresent();
+        boolean interestRegistered = interestedInRepository.findById(new InterestedInId(studentUsername, projectId)).isPresent();
+
         if (!interestRegistered) {
             throw new IllegalStateException("Student hasn't registered their interest for this project");
         }

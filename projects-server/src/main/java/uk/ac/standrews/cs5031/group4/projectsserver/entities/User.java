@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,14 +19,14 @@ public class User {
     private String name;
     private String role;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "interestedStudents")
-    private Set<Project> interestedInProjects;
+    @JsonIgnore // This prevents infinite recursion in JSON
+    @OneToMany(mappedBy = "student")
+    private Set<InterestedIn> interestedInProjects;
 
     /**
      * Default constructor; this is required by JPA.
      */
-    public User() {
+    protected User() {
     }
 
     public User(String username, String name, String role) {
@@ -54,7 +54,7 @@ public class User {
         this.role = role;
     }
 
-    public void setInterestedInProjects(Set<Project> interestedInProjects) {
+    public void setInterestedInProjects(Set<InterestedIn> interestedInProjects) {
         this.interestedInProjects = interestedInProjects;
     }
 
@@ -74,7 +74,26 @@ public class User {
         return role;
     }
 
-    public Set<Project> getInterestedInProjects() {
+    public Set<InterestedIn> getInterestedInProjects() {
         return interestedInProjects;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (o == null) {
+            return false;
+        }
+
+        if (!(o instanceof User)) {
+            return false;
+        }
+
+        User u = (User) o;
+
+        return this.username == u.username && this.name == u.name && this.role == u.role;
     }
 }

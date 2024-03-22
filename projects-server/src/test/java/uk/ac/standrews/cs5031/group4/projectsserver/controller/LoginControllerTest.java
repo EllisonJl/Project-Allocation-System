@@ -18,7 +18,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
 import uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;
 
-// @WebMvcTest({ LoginController.class, ProjectController.class })
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LoginControllerTest {
@@ -79,7 +78,7 @@ public class LoginControllerTest {
      * Tests that users cannot access API routes when they don't have the correct
      * role.
      */
-    // @Test
+    @Test
     @WithMockUser
     public void requestProtectedRouteWithUserButNotCorrectRole() throws Exception {
         mockMvc.perform(get("/proposed-projects")).andExpect(status().isForbidden());
@@ -89,9 +88,9 @@ public class LoginControllerTest {
      * Tests that users can access API routes when they are logged in and have the
      * correct role for the route.
      */
-    // @Test
-    // @WithMockUser(authorities = "staff") // The staff authority is required for this route
-    // public void requestProtectedRouteWithUserWithCorrectRole() throws Exception {
-    //     mockMvc.perform(get("/proposed-projects")).andExpect(status().isOk());
-    // }
+    @Test
+    @WithMockUser(authorities = "staff") // The staff authority is required for this route
+    public void requestProtectedRouteWithUserWithCorrectRole() throws Exception {
+        mockMvc.perform(get("/proposed-projects")).andExpect(status().isOk());
+    }
 }

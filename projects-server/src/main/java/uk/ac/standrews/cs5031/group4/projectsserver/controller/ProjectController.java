@@ -6,41 +6,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.Project;
-import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
 import uk.ac.standrews.cs5031.group4.projectsserver.repository.ProjectRepository;
-import uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.ProjectService;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api") // Base path for all API endpoints in this controller
 public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
     @Autowired
     private ProjectRepository projectRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     @GetMapping("/available-projects")
     public ResponseEntity<List<Project>> getAvailableProjects() {
-        List<Project> availableProjects = new ArrayList<>();
-
-        if (projectRepository.findByAssignedStudentIsNull().isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            availableProjects = projectRepository.findByAssignedStudentIsNull(); // fetches all the projects which
-                                                                                 // hasn't been assigned to anyone.
-            return ResponseEntity.ok(availableProjects);
-        }
+        // fetches all the projects which hasn't been assigned to anyone.
+        List<Project> availableProjects = projectRepository.findByAssignedStudentIsNull();
+        return ResponseEntity.ok(availableProjects);
     }
 
     @GetMapping("/projects/{id}")
@@ -101,7 +88,7 @@ public class ProjectController {
         }
     }
 
-    @PostMapping("/{id}/accept-student")
+    @PostMapping("projects/{id}/accept-student")
     public ResponseEntity<?> acceptStudent(@PathVariable int id, @RequestBody Map<String, String> payload) {
         try {
             String studentUsername = payload.get("student_username");

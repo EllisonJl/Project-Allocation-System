@@ -1,5 +1,7 @@
 package uk.ac.standrews.cs5031.group4.projectsserver.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -17,6 +19,7 @@ public class InterestedIn {
     @JoinColumn(name = "student_username", referencedColumnName = "username")
     private User student;
 
+    @JsonIgnore // This prevents infinite recursion in JSON
     @Id
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id")

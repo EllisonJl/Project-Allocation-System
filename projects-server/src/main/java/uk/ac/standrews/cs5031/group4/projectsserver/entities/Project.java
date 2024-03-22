@@ -2,13 +2,15 @@ package uk.ac.standrews.cs5031.group4.projectsserver.entities;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -16,10 +18,28 @@ import jakarta.persistence.Table;
 @Table(name = "projects")
 public class Project {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String description;
+
+    public Project(String name, String description, User proposedByStaff) {
+        this.name = name;
+        this.description = description;
+        this.proposedByStaff = proposedByStaff;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setProposedByStaff(User proposedByStaff) {
+        this.proposedByStaff = proposedByStaff;
+    }
 
     @ManyToOne
     @JoinColumn(name = "proposed_by", nullable = false)
@@ -29,9 +49,16 @@ public class Project {
     @JoinColumn(name = "assigned_to", nullable = true)
     private User assignedStudent;
 
-    @ManyToMany
-    @JoinTable(name = "interested_in", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "student_username"))
-    private Set<User> interestedStudents;
+    @OneToMany(mappedBy = "project")
+    private Set<InterestedIn> interestedStudents;
+
+    public void setAssignedStudent(User assignedStudent) {
+        this.assignedStudent = assignedStudent;
+    }
+
+    public void setInterestedStudents(Set<InterestedIn> interestedStudents) {
+        this.interestedStudents = interestedStudents;
+    }
 
     /**
      * Default constructor; this is required by JPA.
@@ -66,7 +93,26 @@ public class Project {
         return assignedStudent;
     }
 
-    public Set<User> getInterestedStudents() {
+    public Set<InterestedIn> getInterestedStudents() {
         return interestedStudents;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (o == null) {
+            return false;
+        }
+
+        if (!(o instanceof Project)) {
+            return false;
+        }
+
+        Project p = (Project) o;
+
+        return this.id == p.id && this.name.equals(p.name) && this.description.equals(p.description);
     }
 }

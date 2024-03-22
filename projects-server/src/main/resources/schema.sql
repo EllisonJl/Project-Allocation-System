@@ -24,7 +24,7 @@ CREATE TABLE interested_in (
     student_username VARCHAR(250) NOT NULL,
     project_id INT NOT NULL,
     PRIMARY KEY (student_username, project_id),
-    FOREIGN KEY (student_username) REFERENCES users(username),
-    FOREIGN KEY (project_id) REFERENCES projects(id)
+    FOREIGN KEY (student_username) REFERENCES users(username) ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 )
 

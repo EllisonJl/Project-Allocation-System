@@ -5,5 +5,5 @@ import uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedIn;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedInId;
 
 public interface InterestedInRepository extends CrudRepository<InterestedIn, InterestedInId> {
-
+    // JPA automatically instantiates this interface to interact with the database
 }

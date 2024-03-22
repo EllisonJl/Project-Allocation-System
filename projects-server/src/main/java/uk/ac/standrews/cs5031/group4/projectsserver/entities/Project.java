@@ -3,6 +3,7 @@ package uk.ac.standrews.cs5031.group4.projectsserver.entities;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,33 +24,18 @@ public class Project {
     private String name;
     private String description;
 
-    public Project(String name, String description, User proposedByStaff) {
-        this.name = name;
-        this.description = description;
-        this.proposedByStaff = proposedByStaff;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setProposedByStaff(User proposedByStaff) {
-        this.proposedByStaff = proposedByStaff;
-    }
-
     @ManyToOne
     @JoinColumn(name = "proposed_by", nullable = false)
+    @JsonProperty("proposed_by")
     private User proposedByStaff;
 
     @OneToOne
     @JoinColumn(name = "assigned_to", nullable = true)
+    @JsonProperty("assigned_to")
     private User assignedStudent;
 
     @OneToMany(mappedBy = "project")
+    @JsonProperty("interested_students")
     private Set<InterestedIn> interestedStudents;
 
     public void setAssignedStudent(User assignedStudent) {
@@ -64,6 +50,12 @@ public class Project {
      * Default constructor; this is required by JPA.
      */
     protected Project() {
+    }
+
+    public Project(String name, String description, User proposedByStaff) {
+        this.name = name;
+        this.description = description;
+        this.proposedByStaff = proposedByStaff;
     }
 
     public Project(String name, String description, User proposedByStaff, User assignedStudent) {
@@ -95,6 +87,18 @@ public class Project {
 
     public Set<InterestedIn> getInterestedStudents() {
         return interestedStudents;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setProposedByStaff(User proposedByStaff) {
+        this.proposedByStaff = proposedByStaff;
     }
 
     @Override

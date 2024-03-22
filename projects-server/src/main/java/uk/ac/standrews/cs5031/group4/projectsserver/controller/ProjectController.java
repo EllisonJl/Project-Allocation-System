@@ -13,6 +13,7 @@ import uk.ac.standrews.cs5031.group4.projectsserver.repository.ProjectRepository
 import uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.ProjectService;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

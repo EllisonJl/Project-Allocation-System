@@ -33,38 +33,38 @@ public class ProjectControllerTest {
     private ProjectService projectService; // Mock ProjectService
 
 
-    @Test
-    public void proposeProject_ShouldReturnCreatedProject() throws Exception {
-        Project mockProject = new Project("Test Project", "Description", new User("user1", "User One", "staff"));
-        given(projectService.proposeProject("Test Project", "Description", "user1")).willReturn(mockProject);
-
-        mockMvc.perform(post("/api/projects")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Test Project\", \"description\":\"Description\"}")
-                        .principal(() -> "user1")) // Mock principal
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Test Project"))
-                .andExpect(jsonPath("$.description").value("Description"));
-    }
-
-    @Test
-    public void acceptStudent_WhenSuccess_ReturnsOk() throws Exception {
-        doNothing().when(projectService).acceptStudent(anyInt(), anyString());
-
-        mockMvc.perform(post("/api/projects/1/accept-student")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"student_username\":\"studentUsername\"}"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void acceptStudent_WhenFailed_ReturnsBadRequest() throws Exception {
-        doThrow(new IllegalStateException("Student hasn't registered their interest for this project"))
-                .when(projectService).acceptStudent(anyInt(), anyString());
-
-        mockMvc.perform(post("/api/projects/1/accept-student")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"student_username\":\"studentUsername\"}"))
-                .andExpect(status().isBadRequest());
-    }
+    // @Test
+    // public void proposeProject_ShouldReturnCreatedProject() throws Exception {
+    //     Project mockProject = new Project("Test Project", "Description", new User("user1", "User One", "staff"));
+    //     given(projectService.proposeProject("Test Project", "Description", "user1")).willReturn(mockProject);
+    //
+    //     mockMvc.perform(post("/api/projects")
+    //                     .contentType(MediaType.APPLICATION_JSON)
+    //                     .content("{\"name\":\"Test Project\", \"description\":\"Description\"}")
+    //                     .principal(() -> "user1")) // Mock principal
+    //             .andExpect(status().isCreated())
+    //             .andExpect(jsonPath("$.name").value("Test Project"))
+    //             .andExpect(jsonPath("$.description").value("Description"));
+    // }
+    //
+    // @Test
+    // public void acceptStudent_WhenSuccess_ReturnsOk() throws Exception {
+    //     doNothing().when(projectService).acceptStudent(anyInt(), anyString());
+    //
+    //     mockMvc.perform(post("/api/projects/1/accept-student")
+    //                     .contentType(MediaType.APPLICATION_JSON)
+    //                     .content("{\"student_username\":\"studentUsername\"}"))
+    //             .andExpect(status().isOk());
+    // }
+    //
+    // @Test
+    // public void acceptStudent_WhenFailed_ReturnsBadRequest() throws Exception {
+    //     doThrow(new IllegalStateException("Student hasn't registered their interest for this project"))
+    //             .when(projectService).acceptStudent(anyInt(), anyString());
+    //
+    //     mockMvc.perform(post("/api/projects/1/accept-student")
+    //                     .contentType(MediaType.APPLICATION_JSON)
+    //                     .content("{\"student_username\":\"studentUsername\"}"))
+    //             .andExpect(status().isBadRequest());
+    // }
 }

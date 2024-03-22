@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
 public class User {
     @Id
     private String username;
+    private String password_hash;
     private String name;
     private String role;
 
@@ -24,13 +25,36 @@ public class User {
     /**
      * Default constructor; this is required by JPA.
      */
-    protected User() {
+    public User() {
     }
 
     public User(String username, String name, String role) {
         this.username = username;
         this.name = name;
         this.role = role;
+    }
+
+    public User(String username, String password_hash, String name, String role) {
+        this.username = username;
+        this.password_hash = password_hash;
+        this.name = name;
+        this.role = role;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setInterestedInProjects(Set<Project> interestedInProjects) {
+        this.interestedInProjects = interestedInProjects;
     }
 
     public String getUsername() {

@@ -20,6 +20,25 @@ public class Project {
     private int id;
     private String name;
     private String description;
+    public Project(String name, String description, User proposedByStaff) {
+        this.name = name;
+        this.description = description;
+        this.proposedByStaff = proposedByStaff;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    public void setProposedByStaff(User proposedByStaff) {
+        this.proposedByStaff = proposedByStaff;
+    }
+
 
     @ManyToOne
     @JoinColumn(name = "proposed_by", nullable = false)
@@ -33,10 +52,21 @@ public class Project {
     @JoinTable(name = "interested_in", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "student_username"))
     private Set<User> interestedStudents;
 
+
+
+
+    public void setAssignedStudent(User assignedStudent) {
+        this.assignedStudent = assignedStudent;
+    }
+
+    public void setInterestedStudents(Set<User> interestedStudents) {
+        this.interestedStudents = interestedStudents;
+    }
+
     /**
      * Default constructor; this is required by JPA.
      */
-    protected Project() {
+    public Project() {
     }
 
     public Project(String name, String description, User proposedByStaff, User assignedStudent) {
@@ -69,4 +99,6 @@ public class Project {
     public Set<User> getInterestedStudents() {
         return interestedStudents;
     }
+
+
 }

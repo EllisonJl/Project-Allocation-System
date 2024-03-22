@@ -1,9 +1,14 @@
 package uk.ac.standrews.cs5031.group4.projectsserver.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.Project;
+import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
+import uk.ac.standrews.cs5031.group4.projectsserver.repository.ProjectRepository;
+import uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.ProjectService;
 
 import java.security.Principal;
@@ -11,11 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api") // Base path for all API endpoints in this controller
 public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
-
+    @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
+    private UserRepository userRepository;
     @PostMapping("/register-interest")
     public ResponseEntity<?> registerInterest(@RequestBody Map<String, Object> payload, Principal principal) {
         // Get the username of the currently logged in user from the SecurityContext.
@@ -48,4 +57,29 @@ public class ProjectController {
             return ResponseEntity.internalServerError().body(null);
         }
     }
+
+    @PostMapping("/projects")
+    public ResponseEntity<?> proposeProject(@RequestBody Map<String, String> payload, Principal principal) {
+        String name = payload.get("name");
+        String description = payload.get("description");
+        String username = principal.getName();
+
+        try {
+            Project project = projectService.proposeProject(name, description, username);
+            return ResponseEntity.status(HttpStatus.CREATED).body(project);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+    @PostMapping("/{id}/accept-student")
+    public ResponseEntity<?> acceptStudent(@PathVariable int id, @RequestBody Map<String, String> payload) {
+        try {
+            String studentUsername = payload.get("student_username");
+            projectService.acceptStudent(id, studentUsername);
+            return ResponseEntity.ok().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

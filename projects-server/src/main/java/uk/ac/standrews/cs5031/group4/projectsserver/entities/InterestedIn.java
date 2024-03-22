@@ -26,6 +26,11 @@ public class InterestedIn {
     public InterestedIn() {
     }
 
+    public InterestedIn(User student, Project project) {
+        this.project = project;
+        this.student = student;
+    }
+
     // Getters and setters
     public User getStudent() {
         return student;

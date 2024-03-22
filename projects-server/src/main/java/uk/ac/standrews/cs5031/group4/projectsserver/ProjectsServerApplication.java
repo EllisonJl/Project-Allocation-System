@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,11 @@ public class ProjectsServerApplication {
         return "Hello world!";
     }
 
+    @GetMapping("/secret")
+    public String secret() {
+        return "Top secret!";
+    }
+
     /**
      * A sample request that gets data from the user repository.
      * TODO: remove this once we write the actual queries we need.
@@ -40,6 +46,13 @@ public class ProjectsServerApplication {
     public List<User> users() {
         List<User> result = new ArrayList<>();
         userRepository.findAll().forEach(result::add);
+        return result;
+    }
+
+    @GetMapping("/role")
+    public List<String> role(Authentication auth) {
+        List<String> result = new ArrayList<>();
+        auth.getAuthorities().forEach(a -> result.add(a.toString()));
         return result;
     }
 }

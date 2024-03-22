@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Locally installed node version
+node-v20.11.1-linux-x64/

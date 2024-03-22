@@ -1,6 +1,7 @@
 package uk.ac.standrews.cs5031.group4.projectsserver.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -33,7 +34,10 @@ public class InterestedIn {
         this.student = student;
     }
 
-    // Getters and setters
+    // When serialising to JSON, just serialise as a Student object, ignoring the
+    // project.
+    // (This helps prevent infinite recursion in the JSON.)
+    @JsonValue
     public User getStudent() {
         return student;
     }

@@ -2,6 +2,7 @@ import { LoginForm } from "@components/LoginForm";
 import { UserDispatchContext } from "@components/UserContext";
 import { useApiRequest } from "@hooks/use-api-request";
 import { useAuthToken } from "@hooks/use-auth-token";
+import { User } from "@model/user";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -43,14 +44,20 @@ export function LoginPage() {
         const body = await response.json();
         setToken(body.token);
 
-        // TODO: persist user details in localStorage or get them from the API if we need them
-        setUser({
+        const user: User = {
             username,
             name: body.name,
             role: body.role,
-        });
+        }
+        // TODO: persist user details in localStorage or get them from the API if we need them
+        setUser(user);
 
-        navigate("/");
+        if (user.role === "staff") {
+            navigate("/staff/proposed-projects");
+        } else {
+            // role === "student"
+            navigate("/student/available-projects")
+        }
     }
 
     return (

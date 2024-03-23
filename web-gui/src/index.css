@@ -21,6 +21,10 @@
     margin: 0;
 }
 
+input, textarea, select {
+    font: inherit;
+}
+
 a {
     font-weight: 500;
     color: #646cff;

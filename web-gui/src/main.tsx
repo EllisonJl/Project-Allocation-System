@@ -19,6 +19,7 @@ import {
     StaffProjectPage,
     loader as staffProjectLoader,
 } from "@pages/StaffProjectPage";
+import { NewProjectPage } from "@pages/NewProjectPage";
 
 const router = createBrowserRouter([
     {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
                 path: "projects/:projectId",
                 element: <StaffProjectPage />,
                 loader: staffProjectLoader,
+            },
+            {
+                path: "new-project",
+                element: <NewProjectPage />,
             },
         ],
     },

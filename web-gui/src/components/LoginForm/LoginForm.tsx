@@ -27,13 +27,6 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         setErrorMessage(null);
 
         onSubmit(username, password);
-
-        resetForm();
-    }
-
-    function resetForm() {
-        setUsername("");
-        setPassword("");
     }
 
     return (

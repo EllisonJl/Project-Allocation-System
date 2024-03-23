@@ -7,6 +7,6 @@ export const ProjectSchema = z.object({
     description: z.string(),
     proposed_by: UserSchema,
     assigned_to: UserSchema.nullable(),
-    interested_students: UserSchema.array(),
+    interested_students: UserSchema.array().default([]),
 });
 export type Project = z.infer<typeof ProjectSchema>;

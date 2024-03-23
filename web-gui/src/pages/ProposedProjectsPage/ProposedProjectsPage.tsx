@@ -20,6 +20,8 @@ export function ProposedProjectsPage() {
         <>
             <h1>Proposed projects</h1>
 
+            <Link to="/staff/new-project">Propose new project</Link>
+
             <ul>
                 {projects.map((project) => (
                     <li key={project.id}>

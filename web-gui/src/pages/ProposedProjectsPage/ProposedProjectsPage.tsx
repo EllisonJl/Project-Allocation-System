@@ -24,12 +24,17 @@ export function ProposedProjectsPage() {
                 {projects.map((project) => (
                     <li key={project.id}>
                         <h2>
-                            <Link to={`/staff/projects.${project.id}`}>
+                            <Link to={`/staff/projects/${project.id}`}>
                                 {project.name}
                             </Link>
                         </h2>
                         <div>
-                            {project.interested_students.length} interested
+                            <span>
+                                {project.interested_students.length} interested
+                            </span>
+                            {project.assigned_to !== null && (
+                                <span>Assigned to {project.assigned_to.name}</span>
+                            )}
                         </div>
                     </li>
                 ))}

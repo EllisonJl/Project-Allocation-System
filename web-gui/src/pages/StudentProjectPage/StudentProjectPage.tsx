@@ -2,11 +2,10 @@ import { UserContext } from "@components/UserContext";
 import { useApiRequest } from "@hooks/use-api-request";
 import { Project, ProjectSchema } from "@model/project";
 import { useContext, useEffect, useState } from "react";
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 
 export function StudentProjectPage() {
     const api = useApiRequest();
-    const navigate = useNavigate();
 
     const user = useContext(UserContext);
     const { projectId } = useLoaderData() as { projectId: string };

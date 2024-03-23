@@ -15,6 +15,10 @@ import {
     StudentProjectPage,
     loader as studentProjectLoader,
 } from "@pages/StudentProjectPage";
+import {
+    StaffProjectPage,
+    loader as staffProjectLoader,
+} from "@pages/StaffProjectPage";
 
 const router = createBrowserRouter([
     {
@@ -42,6 +46,11 @@ const router = createBrowserRouter([
             {
                 path: "proposed-projects",
                 element: <ProposedProjectsPage />,
+            },
+            {
+                path: "projects/:projectId",
+                element: <StaffProjectPage />,
+                loader: staffProjectLoader,
             },
         ],
     },

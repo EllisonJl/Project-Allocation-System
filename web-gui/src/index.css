@@ -11,14 +11,20 @@
     background-color: #ffffff;
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
 a {
     font-weight: 500;
     color: #646cff;
 }
 a:hover {
     color: #747bff;
-}
-
-body {
-    margin: 0;
 }

@@ -1,10 +1,12 @@
-import { User } from "./user";
+import { z } from "zod";
+import { UserSchema } from "./user";
 
-export type Project = {
-    id: number;
-    name: string;
-    description: string;
-    proposed_by: User;
-    assigned_to: User | null;
-    interested_students: User[];
-}
+export const ProjectSchema = z.object({
+    id: z.number().int(),
+    name: z.string(),
+    description: z.string(),
+    proposed_by: UserSchema,
+    assigned_to: UserSchema.nullable(),
+    interested_students: UserSchema.array(),
+});
+export type Project = z.infer<typeof ProjectSchema>;

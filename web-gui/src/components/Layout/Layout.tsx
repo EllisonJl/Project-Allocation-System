@@ -3,18 +3,35 @@ import { PropsWithChildren, useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+const staffLinks = [
+    {
+        name: "Proposed projects",
+        to: "/staff/proposed-projects",
+    },
+];
+
+const studentLinks = [
+    {
+        name: "Available projects",
+        to: "/student/available-projects",
+    },
+];
+
 export function Layout({ children }: PropsWithChildren) {
     const user = useContext(UserContext);
+
+    const navLinks = user?.role === "staff" ? staffLinks : studentLinks;
 
     return (
         <>
             <Nav>
-                <span>
+                {navLinks.map((link) => (
+                    <Link to={link.to}>{link.name}</Link>
+                ))}
+                <LoggedInAs>
                     Logged in as {user?.name} ({user?.role})
-                </span>
-                <Link to="/login">
-                    Log in as someone else
-                </Link>
+                </LoggedInAs>
+                <Link to="/login">Log in as someone else</Link>
             </Nav>
             {children}
         </>
@@ -26,6 +43,9 @@ const Nav = styled.nav`
     padding-block: 0.5rem;
     padding-inline: 2rem;
     display: flex;
-    justify-content: end;
     gap: 0.5rem;
+`;
+
+const LoggedInAs = styled.span`
+    margin-left: auto;
 `;

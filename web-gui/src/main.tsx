@@ -11,6 +11,10 @@ import { ProposedProjectsPage } from "@pages/ProposedProjectsPage";
 import { AvailableProjectsPage } from "@pages/AvailableProjectsPage";
 import { RequiresRole } from "@components/RequiresRole";
 import { Layout } from "@components/Layout";
+import {
+    StudentProjectPage,
+    loader as studentProjectLoader,
+} from "@pages/StudentProjectPage";
 
 const router = createBrowserRouter([
     {
@@ -54,6 +58,11 @@ const router = createBrowserRouter([
             {
                 path: "available-projects",
                 element: <AvailableProjectsPage />,
+            },
+            {
+                path: "projects/:projectId",
+                element: <StudentProjectPage />,
+                loader: studentProjectLoader,
             },
         ],
     },

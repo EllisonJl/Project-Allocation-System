@@ -9,12 +9,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
 import uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.JwtService;
 
 @RestController
+// prevents CORS errors when accessing the API
+@CrossOrigin(origins = "*")
 public class LoginController {
     /**
      * Authentication manager used for checking the username and password.

@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+// prevents CORS errors when accessing the API
+@CrossOrigin(origins = "*")
 public class ProjectController {
 
     @Autowired

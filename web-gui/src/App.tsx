@@ -9,10 +9,9 @@ function App() {
 
     // redirect users to the root page corresponding to their role.
     useEffect(() => {
-        if (user && user.role == "staff") {
+        if (user && user.role === "staff") {
             navigate("/staff/proposed-projects");
-        } else {
-            // student
+        } else if (user && user.role === "student") {
             navigate("/student/available-projects");
         }
     });

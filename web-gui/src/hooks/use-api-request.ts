@@ -7,7 +7,11 @@ export function useApiRequest() {
     const [token] = useAuthToken();
     const navigate = useNavigate();
 
-    const fetchFn = async (route: string, opts: RequestInit) => {
+    const fetchFn = async (route: string, opts?: RequestInit) => {
+        if (opts === undefined) {
+            opts = {};
+        }
+
         // add the authorization header for all routes that aren't login
         if (route !== "/login") {
             // if not authenticated, redirect to login page
@@ -25,6 +29,8 @@ export function useApiRequest() {
         }
 
         return await fetch(`${API_URL}${route}`, opts);
+
+        // TODO: automatically redirect to login if fetch returns Unauthorized
     };
 
     return fetchFn;

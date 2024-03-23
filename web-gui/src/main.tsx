@@ -10,6 +10,7 @@ import { UserContextProvider } from "@components/UserContext";
 import { ProposedProjectsPage } from "@pages/ProposedProjectsPage";
 import { AvailableProjectsPage } from "@pages/AvailableProjectsPage";
 import { RequiresRole } from "@components/RequiresRole";
+import { Layout } from "@components/Layout";
 
 const router = createBrowserRouter([
     {
@@ -28,7 +29,9 @@ const router = createBrowserRouter([
         path: "/staff",
         element: (
             <RequiresRole role="staff">
-                <Outlet />
+                <Layout>
+                    <Outlet />
+                </Layout>
             </RequiresRole>
         ),
         children: [
@@ -42,7 +45,9 @@ const router = createBrowserRouter([
         path: "/student",
         element: (
             <RequiresRole role="student">
-                <Outlet />
+                <Layout>
+                    <Outlet />
+                </Layout>
             </RequiresRole>
         ),
         children: [

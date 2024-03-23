@@ -1,5 +1,6 @@
 package uk.ac.standrews.cs5031.group4.projectsserver.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,7 +36,6 @@ public class Project {
     private User assignedStudent;
 
     @OneToMany(mappedBy = "project")
-    @JsonProperty("interested_students")
     private Set<InterestedIn> interestedStudents;
 
     public void setAssignedStudent(User assignedStudent) {
@@ -85,7 +85,11 @@ public class Project {
         return assignedStudent;
     }
 
+    @JsonProperty("interested_students")
     public Set<InterestedIn> getInterestedStudents() {
+        if (interestedStudents == null) {
+            return new HashSet<>();
+        }
         return interestedStudents;
     }
 

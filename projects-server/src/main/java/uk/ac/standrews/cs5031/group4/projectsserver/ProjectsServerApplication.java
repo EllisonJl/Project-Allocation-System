@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
 import uk.ac.standrews.cs5031.group4.projectsserver.repository.ProjectRepository;
@@ -16,6 +17,8 @@ import uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;
 
 @SpringBootApplication
 @RestController
+// prevents CORS errors when accessing the API
+@CrossOrigin(origins = "*")
 public class ProjectsServerApplication {
 
     @Autowired

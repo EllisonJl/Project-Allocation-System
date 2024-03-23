@@ -3,31 +3,12 @@ import { PropsWithChildren, useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const staffLinks = [
-    {
-        name: "Proposed projects",
-        to: "/staff/proposed-projects",
-    },
-];
-
-const studentLinks = [
-    {
-        name: "Available projects",
-        to: "/student/available-projects",
-    },
-];
-
 export function Layout({ children }: PropsWithChildren) {
     const user = useContext(UserContext);
-
-    const navLinks = user?.role === "staff" ? staffLinks : studentLinks;
 
     return (
         <>
             <Nav>
-                {navLinks.map((link) => (
-                    <Link to={link.to} key={link.name}>{link.name}</Link>
-                ))}
                 <LoggedInAs>
                     Logged in as {user?.name} ({user?.role})
                 </LoggedInAs>

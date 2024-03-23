@@ -74,6 +74,9 @@ export function StaffProjectPage() {
                             </li>
                         ))}
                     </ul>
+                    {project.interested_students.length === 0 && (
+                        <div>No interested students yet.</div>
+                    )}
                 </>
             )}
         </>

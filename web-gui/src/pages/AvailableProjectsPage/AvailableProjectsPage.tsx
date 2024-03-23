@@ -16,24 +16,24 @@ export function AvailableProjectsPage() {
             .then((body) => {
                 setProjects(ProjectsListSchema.parse(body));
             });
-    }, [api]);
+    }, []);
 
     return (
         <>
             <h1>Available projects</h1>
 
-            {projects.map((project) => (
-                <div key={project.id}>
-                    <div>
+            <ul>
+                {projects.map((project) => (
+                    <li key={project.id}>
                         <h2>
                             <Link to={`/student/projects/${project.id}`}>
                                 {project.name}
                             </Link>
                         </h2>
                         <span>Proposed by {project.proposed_by.name}</span>
-                    </div>
-                </div>
-            ))}
+                    </li>
+                ))}
+            </ul>
         </>
     );
 }

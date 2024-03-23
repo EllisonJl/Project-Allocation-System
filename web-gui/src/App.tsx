@@ -14,7 +14,7 @@ function App() {
         } else if (user && user.role === "student") {
             navigate("/student/available-projects");
         }
-    }, [navigate, user]);
+    }, [user]);
 
     return "";
 }

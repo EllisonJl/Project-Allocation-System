@@ -21,7 +21,7 @@ export function RequiresAuth({ children }: PropsWithChildren) {
             // fetch the details of the logged in user from the API
             fetchUserDetails(api).then((u) => setUser(u));
         }
-    }, [token, user, navigate, api, setUser]);
+    }, [token, user]);
 
     return <>{children}</>;
 }

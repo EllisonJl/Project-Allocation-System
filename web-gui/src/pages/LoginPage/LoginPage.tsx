@@ -1,7 +1,8 @@
 import { LoginForm } from "@components/LoginForm";
+import { UserDispatchContext } from "@components/UserContext";
 import { useApiRequest } from "@hooks/use-api-request";
 import { useAuthToken } from "@hooks/use-auth-token";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -9,6 +10,7 @@ export function LoginPage() {
     const api = useApiRequest();
     const [_token, setToken] = useAuthToken();
     const navigate = useNavigate();
+    const setUser = useContext(UserDispatchContext);
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -40,6 +42,13 @@ export function LoginPage() {
         // store the auth token we got
         const body = await response.json();
         setToken(body.token);
+
+        // TODO: persist user details in localStorage or get them from the API if we need them
+        setUser({
+            username,
+            name: body.name,
+            role: body.role,
+        });
 
         navigate("/");
     }

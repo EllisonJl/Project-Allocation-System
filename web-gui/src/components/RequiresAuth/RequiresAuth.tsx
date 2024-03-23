@@ -1,16 +1,18 @@
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthToken } from "../../hooks/use-auth-token";
+import { UserContext } from "@components/UserContext";
 
 export function RequiresAuth({ children }: PropsWithChildren) {
     const navigate = useNavigate();
     const [token] = useAuthToken();
+    const user = useContext(UserContext);
 
     useEffect(() => {
-        if (token === undefined) {
+        if (token === undefined || user === null) {
             navigate("/login");
         }
-    }, [token, navigate]);
+    }, [token, user, navigate]);
 
     return <>{children}</>;
 }

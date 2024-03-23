@@ -23,5 +23,6 @@ module.exports = {
                 caughtErrorsIgnorePattern: "^_",
             },
         ],
+        "react-hooks/exhaustive-deps": "of",
     },
 };

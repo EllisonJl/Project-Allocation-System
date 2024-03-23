@@ -16,7 +16,7 @@ export function AvailableProjectsPage() {
             .then((body) => {
                 setProjects(ProjectsListSchema.parse(body));
             });
-    });
+    }, [api]);
 
     return (
         <>

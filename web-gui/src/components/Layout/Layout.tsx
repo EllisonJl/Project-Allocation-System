@@ -26,7 +26,7 @@ export function Layout({ children }: PropsWithChildren) {
         <>
             <Nav>
                 {navLinks.map((link) => (
-                    <Link to={link.to}>{link.name}</Link>
+                    <Link to={link.to} key={link.name}>{link.name}</Link>
                 ))}
                 <LoggedInAs>
                     Logged in as {user?.name} ({user?.role})

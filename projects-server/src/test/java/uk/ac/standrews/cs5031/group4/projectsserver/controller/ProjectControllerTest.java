@@ -18,6 +18,7 @@ import uk.ac.standrews.cs5031.group4.projectsserver.service.ProjectService;
 
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -141,4 +142,73 @@ class ProjectControllerTest {
                 .content("{\"student_username\":\"studentUsername\"}"))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    @WithMockUser(username = "studentUser", authorities = "student")
+    public void registerInterest_WhenProjectExists_AndUserIsStudent() throws Exception {
+        // Set up test data
+        User user = new User("studentUser", "", "Student Name", "student");
+        Project project = new Project("Project Name", "Project Description", user);
+        userRepository.save(user);
+        projectRepository.save(project);
+
+        // Perform test action
+        mockMvc.perform(post("/register-interest")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"project_id\":" + project.getId() + "}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "staffUser", authorities = "staff")
+    public void getProposedProjects_WhenProjectsExist() throws Exception {
+        // Set up test data
+        User staffUser = new User("staffUser", "", "Staff Name", "staff");
+        Project project1 = new Project("Project 1", "Description 1", staffUser);
+        Project project2 = new Project("Project 2", "Description 2", staffUser);
+        userRepository.save(staffUser);
+        projectRepository.save(project1);
+        projectRepository.save(project2);
+
+        // Perform test action
+        mockMvc.perform(get("/proposed-projects")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].name").value("Project 1"))
+                .andExpect(jsonPath("$.[1].name").value("Project 2"));
+    }
+
+    @Test
+    public void registerInterest_WhenNotLoggedIn_ShouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(post("/register-interest")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"project_id\":1}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = "studentUser", authorities = "student")
+    public void registerInterest_WhenAlreadyRegistered_ShouldReturnForbidden() throws Exception {
+        // 假设学生已经对项目ID为1的项目注册过兴趣
+        mockMvc.perform(post("/register-interest")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"project_id\":1}")) // 确保这设置反映在你的测试数据库中
+                .andExpect(status().isForbidden()); // 期待403禁止状态
+    }
+
+
+
+    @Test
+    public void getProposedProjects_WhenNotLoggedIn_ShouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(get("/proposed-projects"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = "studentUser", authorities = "student")
+    public void getProposedProjects_WhenUserIsStudent_ShouldReturnForbidden() throws Exception {
+        mockMvc.perform(get("/proposed-projects"))
+                .andExpect(status().isForbidden());
+    }
+
 }

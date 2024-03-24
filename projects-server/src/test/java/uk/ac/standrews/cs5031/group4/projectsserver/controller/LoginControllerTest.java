@@ -93,4 +93,27 @@ public class LoginControllerTest {
     public void requestProtectedRouteWithUserWithCorrectRole() throws Exception {
         mockMvc.perform(get("/proposed-projects")).andExpect(status().isOk());
     }
+
+
+    @Test
+    public void unregisteredUserCannotLogin() throws Exception {
+        LoginRequestBody request = new LoginRequestBody("unregistered", "password");
+        mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isUnauthorized());
+    }
+
+    /**
+     * Tests that the server handles incorrect JSON format gracefully.
+     */
+    @Test
+    public void loginWithMalformedJson() throws Exception {
+        String malformedJson = "{\"username\":\"user\", \"password\":";
+        mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(malformedJson))
+                .andExpect(status().isBadRequest());
+    }
+
 }

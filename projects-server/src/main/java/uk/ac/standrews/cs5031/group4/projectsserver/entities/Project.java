@@ -49,7 +49,7 @@ public class Project {
     /**
      * Default constructor; this is required by JPA.
      */
-    protected Project() {
+    public Project() {
     }
 
     public Project(String name, String description, User proposedByStaff) {

@@ -1,4 +1,4 @@
-package uk.ac.standrews.cs5031.group4.projectsserver;
+package uk.ac.standrews.cs5031.group4.projectsserver.controller;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

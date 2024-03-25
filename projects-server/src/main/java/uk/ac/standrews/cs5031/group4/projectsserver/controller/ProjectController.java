@@ -29,6 +29,7 @@ public class ProjectController {
     public ResponseEntity<List<Project>> getAvailableProjects() {
         // fetches all the projects which hasn't been assigned to anyone.
         List<Project> availableProjects = projectRepository.findByAssignedStudentIsNull();
+        //List<Project> availableProjects = projectRepository.findByAssignedStudentIsEmptyUser();
         return ResponseEntity.ok(availableProjects);
     }
 

@@ -1,3 +1,4 @@
+import { Content } from "@components/Content";
 import { useApiRequest } from "@hooks/use-api-request";
 import { Project, ProjectSchema } from "@model/project";
 import { useEffect, useState } from "react";
@@ -47,7 +48,7 @@ export function StaffProjectPage() {
     }
 
     return (
-        <>
+        <Content>
             <Link to="/staff/proposed-projects">All projects</Link>
             <h1>{project.name}</h1>
             <p>{project.description}</p>
@@ -79,6 +80,6 @@ export function StaffProjectPage() {
                     )}
                 </>
             )}
-        </>
+        </Content>
     );
 }

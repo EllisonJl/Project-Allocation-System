@@ -1,3 +1,4 @@
+import { Content } from "@components/Content";
 import { useApiRequest } from "@hooks/use-api-request";
 import { Project, ProjectSchema } from "@model/project";
 import { useEffect, useState } from "react";
@@ -19,7 +20,7 @@ export function AvailableProjectsPage() {
     }, []);
 
     return (
-        <>
+        <Content>
             <h1>Available projects</h1>
 
             <ul>
@@ -34,6 +35,6 @@ export function AvailableProjectsPage() {
                     </li>
                 ))}
             </ul>
-        </>
+        </Content>
     );
 }

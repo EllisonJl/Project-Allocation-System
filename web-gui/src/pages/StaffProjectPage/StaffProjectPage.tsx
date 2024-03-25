@@ -3,7 +3,8 @@ import { StyledLink } from "@components/Link";
 import { useApiRequest } from "@hooks/use-api-request";
 import { Project, ProjectSchema } from "@model/project";
 import { useEffect, useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
+import styled from "styled-components";
 
 export function StaffProjectPage() {
     const api = useApiRequest();
@@ -56,23 +57,26 @@ export function StaffProjectPage() {
 
             {project.assigned_to !== null ? (
                 <>
-                    <h2>Assigned student</h2>
-                    <p>{project.assigned_to.name}</p>
+                    <h2 className="prose">Assigned student</h2>
+                    <p>
+                        {project.assigned_to.name} (
+                        {project.assigned_to.username})
+                    </p>
                 </>
             ) : (
                 <>
-                    <h2>Interested students</h2>
+                    <h2 className="prose">Interested students</h2>
                     <ul>
                         {project.interested_students.map((student) => (
                             <li key={student.username}>
                                 {student.name} ({student.username})
-                                <button
+                                <AcceptButton
                                     type="button"
                                     onClick={() =>
                                         acceptStudent(student.username)
                                     }>
                                     Accept
-                                </button>
+                                </AcceptButton>
                             </li>
                         ))}
                     </ul>
@@ -84,3 +88,20 @@ export function StaffProjectPage() {
         </Content>
     );
 }
+
+const AcceptButton = styled.button`
+    margin-left: 1rem;
+    padding-inline: 0.75rem;
+
+    background: var(--color-cyan-400);
+    border: none;
+    border-radius: 4px;
+
+    transition: all 150ms;
+
+    font-weight: bold;
+
+    &:hover {
+        background: var(--color-cyan-500);
+    }
+`;

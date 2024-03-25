@@ -28,7 +28,8 @@
 
 input,
 textarea,
-select {
+select,
+button {
     font: inherit;
 }
 
@@ -37,3 +38,7 @@ h1 {
     margin-bottom: 0.75em;
 }
 
+h2.prose {
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+}

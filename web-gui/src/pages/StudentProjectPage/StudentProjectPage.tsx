@@ -4,7 +4,8 @@ import { UserContext } from "@components/UserContext";
 import { useApiRequest } from "@hooks/use-api-request";
 import { Project, ProjectSchema } from "@model/project";
 import { useContext, useEffect, useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
+import styled from "styled-components";
 
 export function StudentProjectPage() {
     const api = useApiRequest();
@@ -60,15 +61,53 @@ export function StudentProjectPage() {
         <Content>
             <StyledLink to="/student/available-projects">All projects</StyledLink>
             <h1>{project.name}</h1>
-            <span>Proposed by {project.proposed_by.name}</span>
+            <Wrapper>
+            <ProposedBy>Proposed by {project.proposed_by.name}</ProposedBy>
             <p>{project.description}</p>
             {hasRegisteredInterest ? (
-                <span>Interest registered!</span>
+                <InterestRegisteredText>Interest registered!</InterestRegisteredText>
             ) : (
-                <button type="button" onClick={registerInterest}>
+                <RegisterInterestButton type="button" onClick={registerInterest}>
                     Register interest
-                </button>
+                </RegisterInterestButton>
             )}
+            </Wrapper>
         </Content>
     );
 }
+
+const Wrapper = styled.div`
+    * + * {
+        margin-top: 1em;
+    }
+`;
+
+const ProposedBy = styled.div`
+    font-weight: bold;
+`
+
+const RegisterInterestButton = styled.button`
+    padding-inline: 0.75rem;
+    padding-block: 0.25rem;
+
+    background: var(--color-cyan-400);
+    border: none;
+    border-radius: 4px;
+
+    transition: all 150ms;
+
+    font-weight: bold;
+
+    &:hover {
+        background: var(--color-cyan-500);
+    }
+`;
+
+const InterestRegisteredText = styled.div`
+    width: fit-content;
+    border: 2px solid var(--color-cyan-400);
+    border-radius: 4px;
+    padding-inline: 0.75rem;
+    padding-block: 0.25rem;
+    font-weight: bold;
+`

@@ -1,7 +1,6 @@
 import { StyledLink } from "@components/Link";
 import { UserContext } from "@components/UserContext";
 import { PropsWithChildren, useContext } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export function Layout({ children }: PropsWithChildren) {

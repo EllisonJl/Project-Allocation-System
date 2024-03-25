@@ -1,9 +1,9 @@
 import { Content } from "@components/Content";
-import { StyledLink } from "@components/Link";
+import { ProjectCard } from "@components/ProjectCard";
 import { useApiRequest } from "@hooks/use-api-request";
 import { Project, ProjectSchema } from "@model/project";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 const ProjectsListSchema = ProjectSchema.array();
 
@@ -24,18 +24,25 @@ export function AvailableProjectsPage() {
         <Content>
             <h1>Available projects</h1>
 
-            <ul>
+            <Ul>
                 {projects.map((project) => (
                     <li key={project.id}>
-                        <h2>
-                            <StyledLink to={`/student/projects/${project.id}`}>
-                                {project.name}
-                            </StyledLink>
-                        </h2>
-                        <span>Proposed by {project.proposed_by.name}</span>
+                        <ProjectCard project={project} linkTo={`/student/projects/${project.id}`} showProposedBy={true} />
                     </li>
                 ))}
-            </ul>
+            </Ul>
         </Content>
     );
 }
+
+const Ul = styled.ul`
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    padding-top: 2rem;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    row-gap: 1rem;
+    column-gap: 1rem;
+`

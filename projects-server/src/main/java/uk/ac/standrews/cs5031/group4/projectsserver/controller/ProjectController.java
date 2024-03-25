@@ -19,6 +19,8 @@ import java.util.Optional;
  * Controller class for handling HTTP requests related to projects.
  */
 @RestController // Indicates that this class is a REST controller.
+// prevents CORS errors when accessing the API
+@CrossOrigin(origins = "*")
 public class ProjectController {
 
     @Autowired // Automatically injects an instance of ProjectService.

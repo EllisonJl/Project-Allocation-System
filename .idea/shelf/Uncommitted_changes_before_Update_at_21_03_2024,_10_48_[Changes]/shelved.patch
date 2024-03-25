@@ -1,0 +1,165 @@
+Index: projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectsServerApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package uk.ac.standrews.cs5031.group4.projectsserver;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.boot.SpringApplication;\r\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\r\nimport org.springframework.security.core.Authentication;\r\nimport org.springframework.web.bind.annotation.GetMapping;\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.entities.User;\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.repository.ProjectRepository;\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;\r\n\r\n@SpringBootApplication\r\n@RestController\r\npublic class ProjectsServerApplication {\r\n\r\n    @Autowired\r\n    private UserRepository userRepository;\r\n\r\n    @Autowired\r\n    private ProjectRepository projectRepository;\r\n\r\n    public static void main(String[] args) {\r\n        SpringApplication.run(ProjectsServerApplication.class, args);\r\n    }\r\n\r\n    @GetMapping(\"/\")\r\n    public String helloWorld() {\r\n        return \"Hello world!\";\r\n    }\r\n\r\n    @GetMapping(\"/secret\")\r\n    public String secret() {\r\n        return \"Top secret!\";\r\n    }\r\n\r\n    /**\r\n     * A sample request that gets data from the user repository.\r\n     * TODO: remove this once we write the actual queries we need.\r\n     */\r\n    @GetMapping(\"/users\")\r\n    public List<User> users() {\r\n        List<User> result = new ArrayList<>();\r\n        userRepository.findAll().forEach(result::add);\r\n        return result;\r\n    }\r\n\r\n    @GetMapping(\"/role\")\r\n    public List<String> role(Authentication auth) {\r\n        List<String> result = new ArrayList<>();\r\n        auth.getAuthorities().forEach(a -> result.add(a.toString()));\r\n        return result;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectsServerApplication.java b/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectsServerApplication.java
+--- a/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectsServerApplication.java	(revision d4a345c3baea24ad89a0eda44d0a7e78c27c332e)
++++ b/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectsServerApplication.java	(date 1711018064861)
+@@ -1,4 +1,4 @@
+-package uk.ac.standrews.cs5031.group4.projectsserver;
++package com.cs5031-p3;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
+@@ -26,6 +26,7 @@
+ 
+     public static void main(String[] args) {
+         SpringApplication.run(ProjectsServerApplication.class, args);
++
+     }
+ 
+     @GetMapping("/")
+Index: projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectControllerTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectControllerTest.java b/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectControllerTest.java
+new file mode 100644
+--- /dev/null	(date 1711018064874)
++++ b/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectControllerTest.java	(date 1711018064874)
+@@ -0,0 +1,51 @@
++package uk.ac.standrews.cs5031.group4.projectsserver;
++
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.api.extension.ExtendWith;
++import org.mockito.InjectMocks;
++import org.mockito.Mock;
++import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
++import org.springframework.boot.test.context.SpringBootTest;
++import org.springframework.http.MediaType;
++import org.springframework.test.context.junit.jupiter.SpringExtension;
++import org.springframework.test.web.servlet.MockMvc;
++import org.springframework.test.web.servlet.setup.MockMvcBuilders;
++
++import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
++import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
++import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
++
++@ExtendWith(SpringExtension.class)
++@SpringBootTest
++@AutoConfigureMockMvc
++public class ProjectControllerTest {
++
++    @Mock
++    private ProjectService projectService;
++
++    @InjectMocks
++    private ProjectController projectController;
++
++    private MockMvc mockMvc;
++
++    @BeforeEach
++    public void setup() {
++        mockMvc = MockMvcBuilders.standaloneSetup(projectController).build();
++    }
++
++    @Test
++    public void postProject_ShouldCreateProject_WhenGivenValidData() throws Exception {
++
++        mockMvc.perform(post("/projects")
++                        .contentType(MediaType.APPLICATION_JSON)
++                        .content("{\"name\": \"New Project\", \"description\": \"Project Description\"}"))
++                .andExpect(status().isOk())
++                .andExpect(jsonPath("$.id").isNumber())
++                .andExpect(jsonPath("$.name").value("New Project"))
++                .andExpect(jsonPath("$.description").value("Project Description"))
++                .andExpect(jsonPath("$.proposed_by").exists())
++                .andExpect(jsonPath("$.interested_students").isEmpty());
++    }
++
++}
+Index: projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/StudentControllerTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/StudentControllerTest.java b/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/StudentControllerTest.java
+new file mode 100644
+--- /dev/null	(date 1711018064871)
++++ b/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/StudentControllerTest.java	(date 1711018064871)
+@@ -0,0 +1,70 @@
++package uk.ac.standrews.cs5031.group4.projectsserver;
++
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.api.extension.ExtendWith;
++import org.mockito.InjectMocks;
++import org.mockito.Mock;
++import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
++import org.springframework.boot.test.context.SpringBootTest;
++import org.springframework.http.MediaType;
++import org.springframework.test.context.junit.jupiter.SpringExtension;
++import org.springframework.test.web.servlet.MockMvc;
++import org.springframework.test.web.servlet.setup.MockMvcBuilders;
++
++import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
++import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
++
++@ExtendWith(SpringExtension.class)
++@SpringBootTest
++@AutoConfigureMockMvc
++public class StudentControllerTest {
++
++    @Mock
++    private ProjectService projectService;
++
++    @InjectMocks
++    private ProjectController projectController;
++
++    private MockMvc mockMvc;
++
++    @BeforeEach
++    public void setup() {
++        mockMvc = MockMvcBuilders.standaloneSetup(projectController).build();
++    }
++
++    @Test
++    public void acceptStudent_ShouldAcceptStudent_WhenGivenValidData() throws Exception {
++        int projectId = 1000000;
++        String studentUsername = "validStudentUsername";
++
++        mockMvc.perform(post("/projects/" + projectId + "/accept-student")
++                        .contentType(MediaType.APPLICATION_JSON)
++                        .content("{\"student_username\": \"" + studentUsername + "\"}"))
++                .andExpect(status().isOk());
++    }
++
++    @Test
++    public void acceptStudent_ShouldReturnBadRequest_WhenStudentAlreadyAssigned() throws Exception {
++
++        int projectId = 2000000;
++        String studentUsername = "assignedStudentUsername";
++
++        mockMvc.perform(post("/projects/" + projectId + "/accept-student")
++                        .contentType(MediaType.APPLICATION_JSON)
++                        .content("{\"student_username\": \"" + studentUsername + "\"}"))
++                .andExpect(status().isBadRequest());
++    }
++
++    @Test
++    public void acceptStudent_ShouldReturnBadRequest_WhenStudentHasNotRegisteredInterest() throws Exception {
++
++        int projectId = 3000000;
++        String studentUsername = "uninterestedStudentUsername";
++
++        mockMvc.perform(post("/projects/" + projectId + "/accept-student")
++                        .contentType(MediaType.APPLICATION_JSON)
++                        .content("{\"student_username\": \"" + studentUsername + "\"}"))
++                .andExpect(status().isBadRequest());
++    }
++

@@ -1,0 +1,189 @@
+Index: projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectsServerApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package uk.ac.standrews.cs5031.group4.projectsserver;\r\n\r\nimport org.springframework.boot.SpringApplication;\r\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\r\n\r\n@SpringBootApplication\r\npublic class ProjectsServerApplication {\r\n\r\n    public static void main(String[] args) {\r\n        SpringApplication.run(ProjectsServerApplication.class, args);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectsServerApplication.java b/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectsServerApplication.java
+--- a/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectsServerApplication.java	(revision 0092fa19023fa41135669541b1d6c369489490e2)
++++ b/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectsServerApplication.java	(date 1711018064552)
+@@ -1,4 +1,4 @@
+-package uk.ac.standrews.cs5031.group4.projectsserver;
++package com.cs5031-p3;
+ 
+ import org.springframework.boot.SpringApplication;
+ import org.springframework.boot.autoconfigure.SpringBootApplication;
+@@ -8,6 +8,7 @@
+ 
+     public static void main(String[] args) {
+         SpringApplication.run(ProjectsServerApplication.class, args);
++
+     }
+ 
+ }
+Index: projects-server/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n    xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n    <parent>\r\n        <groupId>org.springframework.boot</groupId>\r\n        <artifactId>spring-boot-starter-parent</artifactId>\r\n        <version>3.2.3</version>\r\n        <relativePath/> <!-- lookup parent from repository -->\r\n        </parent>\r\n    <groupId>uk.ac.standrews.cs5031.group4</groupId>\r\n    <artifactId>projects-server</artifactId>\r\n    <version>0.0.1-SNAPSHOT</version>\r\n    <name>projects-server</name>\r\n    <description>Project allocation system server</description>\r\n    <properties>\r\n        <java.version>17</java.version>\r\n        </properties>\r\n    <dependencies>\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-security</artifactId>\r\n            </dependency>\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-web</artifactId>\r\n            </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-test</artifactId>\r\n            <scope>test</scope>\r\n            </dependency>\r\n        <dependency>\r\n            <groupId>org.springframework.security</groupId>\r\n            <artifactId>spring-security-test</artifactId>\r\n            <scope>test</scope>\r\n            </dependency>\r\n        </dependencies>\r\n\r\n    <build>\r\n        <plugins>\r\n            <plugin>\r\n                <groupId>org.springframework.boot</groupId>\r\n                <artifactId>spring-boot-maven-plugin</artifactId>\r\n                </plugin>\r\n            </plugins>\r\n        </build>\r\n\r\n    </project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/projects-server/pom.xml b/projects-server/pom.xml
+--- a/projects-server/pom.xml	(revision 0092fa19023fa41135669541b1d6c369489490e2)
++++ b/projects-server/pom.xml	(date 1711012791372)
+@@ -43,8 +43,9 @@
+             <plugin>
+                 <groupId>org.springframework.boot</groupId>
+                 <artifactId>spring-boot-maven-plugin</artifactId>
+-                </plugin>
+-            </plugins>
+-        </build>
++            </plugin>
++        </plugins>
++    </build>
+ 
+-    </project>
++
++</project>
+Index: projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/StudentControllerTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/StudentControllerTest.java b/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/StudentControllerTest.java
+new file mode 100644
+--- /dev/null	(date 1710871762317)
++++ b/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/StudentControllerTest.java	(date 1710871762317)
+@@ -0,0 +1,70 @@
++package uk.ac.standrews.cs5031.group4.projectsserver;
++
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.api.extension.ExtendWith;
++import org.mockito.InjectMocks;
++import org.mockito.Mock;
++import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
++import org.springframework.boot.test.context.SpringBootTest;
++import org.springframework.http.MediaType;
++import org.springframework.test.context.junit.jupiter.SpringExtension;
++import org.springframework.test.web.servlet.MockMvc;
++import org.springframework.test.web.servlet.setup.MockMvcBuilders;
++
++import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
++import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
++
++@ExtendWith(SpringExtension.class)
++@SpringBootTest
++@AutoConfigureMockMvc
++public class StudentControllerTest {
++
++    @Mock
++    private ProjectService projectService;
++
++    @InjectMocks
++    private ProjectController projectController;
++
++    private MockMvc mockMvc;
++
++    @BeforeEach
++    public void setup() {
++        mockMvc = MockMvcBuilders.standaloneSetup(projectController).build();
++    }
++
++    @Test
++    public void acceptStudent_ShouldAcceptStudent_WhenGivenValidData() throws Exception {
++        int projectId = 1000000;
++        String studentUsername = "validStudentUsername";
++
++        mockMvc.perform(post("/projects/" + projectId + "/accept-student")
++                        .contentType(MediaType.APPLICATION_JSON)
++                        .content("{\"student_username\": \"" + studentUsername + "\"}"))
++                .andExpect(status().isOk());
++    }
++
++    @Test
++    public void acceptStudent_ShouldReturnBadRequest_WhenStudentAlreadyAssigned() throws Exception {
++
++        int projectId = 2000000;
++        String studentUsername = "assignedStudentUsername";
++
++        mockMvc.perform(post("/projects/" + projectId + "/accept-student")
++                        .contentType(MediaType.APPLICATION_JSON)
++                        .content("{\"student_username\": \"" + studentUsername + "\"}"))
++                .andExpect(status().isBadRequest());
++    }
++
++    @Test
++    public void acceptStudent_ShouldReturnBadRequest_WhenStudentHasNotRegisteredInterest() throws Exception {
++
++        int projectId = 3000000;
++        String studentUsername = "uninterestedStudentUsername";
++
++        mockMvc.perform(post("/projects/" + projectId + "/accept-student")
++                        .contentType(MediaType.APPLICATION_JSON)
++                        .content("{\"student_username\": \"" + studentUsername + "\"}"))
++                .andExpect(status().isBadRequest());
++    }
++
+Index: projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectControllerTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectControllerTest.java b/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectControllerTest.java
+new file mode 100644
+--- /dev/null	(date 1710871434233)
++++ b/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectControllerTest.java	(date 1710871434233)
+@@ -0,0 +1,51 @@
++package uk.ac.standrews.cs5031.group4.projectsserver;
++
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.api.extension.ExtendWith;
++import org.mockito.InjectMocks;
++import org.mockito.Mock;
++import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
++import org.springframework.boot.test.context.SpringBootTest;
++import org.springframework.http.MediaType;
++import org.springframework.test.context.junit.jupiter.SpringExtension;
++import org.springframework.test.web.servlet.MockMvc;
++import org.springframework.test.web.servlet.setup.MockMvcBuilders;
++
++import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
++import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
++import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
++
++@ExtendWith(SpringExtension.class)
++@SpringBootTest
++@AutoConfigureMockMvc
++public class ProjectControllerTest {
++
++    @Mock
++    private ProjectService projectService;
++
++    @InjectMocks
++    private ProjectController projectController;
++
++    private MockMvc mockMvc;
++
++    @BeforeEach
++    public void setup() {
++        mockMvc = MockMvcBuilders.standaloneSetup(projectController).build();
++    }
++
++    @Test
++    public void postProject_ShouldCreateProject_WhenGivenValidData() throws Exception {
++
++        mockMvc.perform(post("/projects")
++                        .contentType(MediaType.APPLICATION_JSON)
++                        .content("{\"name\": \"New Project\", \"description\": \"Project Description\"}"))
++                .andExpect(status().isOk())
++                .andExpect(jsonPath("$.id").isNumber())
++                .andExpect(jsonPath("$.name").value("New Project"))
++                .andExpect(jsonPath("$.description").value("Project Description"))
++                .andExpect(jsonPath("$.proposed_by").exists())
++                .andExpect(jsonPath("$.interested_students").isEmpty());
++    }
++
++}

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="64ef4520-9ebe-4c37-a129-e18864d389b6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/ProjectServiceTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="jl406/create-server" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver/StudentControllerTest.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2drSxOwA07BQFkRtOVCIh8YtMFZ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "jl406/create-server",
+    "last_opened_file_path": "/Users/jllulu/Desktop/Course work/CS5031/cs5031-p3/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Global Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "MavenSettings",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/projects-server/src/test/java/uk/ac/standrews/cs5031/group4/projectsserver" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="64ef4520-9ebe-4c37-a129-e18864d389b6" name="Changes" comment="" />
+      <created>1710764949839</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1710764949839</updated>
+      <workItem from="1710764950966" duration="1438000" />
+      <workItem from="1710865061749" duration="6496000" />
+      <workItem from="1710872446442" duration="740000" />
+      <workItem from="1710948169120" duration="1547000" />
+      <workItem from="1711012770616" duration="3515000" />
+      <workItem from="1711017209080" duration="610000" />
+      <workItem from="1711017827030" duration="666000" />
+      <workItem from="1711018502385" duration="1494000" />
+      <workItem from="1711022717269" duration="2915000" />
+      <workItem from="1711126528013" duration="5000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

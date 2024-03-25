@@ -1,0 +1,128 @@
+Index: projects-server/src/main/resources/data.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>-- Seeds the database with initial data.\r\n\r\n-- All passwords are \"password123\"\r\nINSERT INTO users (username, password_hash, name, role) VALUES\r\n    ('jbloggs', '$2a$12$mtYLOQ1rWZxMjni99wxi4uUYvEK1ASDUm5Jm2RRXrfQT3TYCwlnKy', 'Joe Bloggs', 'staff'),\r\n    ('zsw', '$2a$12$mtYLOQ1rWZxMjni99wxi4uUYvEK1ASDUm5Jm2RRXrfQT3TYCwlnKy', 'zzssww', 'staff'),\r\n    ('mm20', '$2a$12$mtYLOQ1rWZxMjni99wxi4uUYvEK1ASDUm5Jm2RRXrfQT3TYCwlnKy', 'Max Mustermann', 'student'),\r\n    ('jappleseed', '$2a$12$mtYLOQ1rWZxMjni99wxi4uUYvEK1ASDUm5Jm2RRXrfQT3TYCwlnKy', 'Jane Appleseed', 'student');\r\n\r\nINSERT INTO projects (name, description, proposed_by) VALUES\r\n    ('Foobar Gigatron', 'This project aims to extend the Foobar project to add Gigatron features. This will include supporting new requests to the Gizmobot.', 'jbloggs');\r\nINSERT INTO projects (name, description, proposed_by) VALUES\r\n    ('Advanced Widgetry', 'This project involves developing advanced features for the Widget application, including new user interfaces and enhanced performance metrics.', 'jbloggs');\r\nINSERT INTO projects (name, description, proposed_by) VALUES\r\n    ('Virtual Reality Space', 'Aims to create a new virtual reality environment for educational purposes, focusing on immersive learning experiences in science.', 'zsw');\r\nINSERT INTO projects (name, description, proposed_by) VALUES\r\n    ('Eco-Friendly Solutions', 'The project is dedicated to creating eco-friendly, sustainable energy solutions for small to medium-sized enterprises.', 'zsw');\r\n\r\n\r\nINSERT INTO interested_in (student_username, project_id) VALUES\r\n    ('mm20', (SELECT id FROM projects WHERE name = 'Foobar Gigatron'));\r\n
+===================================================================
+diff --git a/projects-server/src/main/resources/data.sql b/projects-server/src/main/resources/data.sql
+--- a/projects-server/src/main/resources/data.sql	
++++ b/projects-server/src/main/resources/data.sql	
+@@ -2,10 +2,17 @@
+ 
+ -- All passwords are "password123"
+ INSERT INTO users (username, password_hash, name, role) VALUES
++<<<<<<< HEAD
+     ('jbloggs', '$2a$12$mtYLOQ1rWZxMjni99wxi4uUYvEK1ASDUm5Jm2RRXrfQT3TYCwlnKy', 'Joe Bloggs', 'staff'),
+     ('zsw', '$2a$12$mtYLOQ1rWZxMjni99wxi4uUYvEK1ASDUm5Jm2RRXrfQT3TYCwlnKy', 'zzssww', 'staff'),
+     ('mm20', '$2a$12$mtYLOQ1rWZxMjni99wxi4uUYvEK1ASDUm5Jm2RRXrfQT3TYCwlnKy', 'Max Mustermann', 'student'),
+     ('jappleseed', '$2a$12$mtYLOQ1rWZxMjni99wxi4uUYvEK1ASDUm5Jm2RRXrfQT3TYCwlnKy', 'Jane Appleseed', 'student');
++=======
++    ('jbloggs', '', 'Joe Bloggs', 'staff'),
++    ('zsw', '', 'zzssww', 'staff'),
++    ('mm20', '', 'Max Mustermann', 'student'),
++    ('jappleseed', '', 'Jane Appleseed', 'student');
++>>>>>>> origin/hd/project-list
+ 
+ INSERT INTO projects (name, description, proposed_by) VALUES
+     ('Foobar Gigatron', 'This project aims to extend the Foobar project to add Gigatron features. This will include supporting new requests to the Gizmobot.', 'jbloggs');
+Index: projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/controller/ProjectController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package uk.ac.standrews.cs5031.group4.projectsserver.controller;\r\n\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.security.core.Authentication;\r\nimport org.springframework.web.bind.annotation.*;\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.entities.Project;\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.service.ProjectService;\r\n\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n@RestController\r\npublic class ProjectController {\r\n\r\n    @Autowired\r\n    private ProjectService projectService;\r\n\r\n    @PostMapping(\"/register-interest\")\r\n    public ResponseEntity<?> registerInterest(@RequestBody Map<String, Object> payload, Authentication auth) {\r\n        // Get the username of the currently logged in user from the SecurityContext.\r\n        String username = auth.getName();\r\n        // Get project_id from request body\r\n        int projectId = (Integer) payload.get(\"project_id\");\r\n        try {\r\n            // Calling Service layer methods to handle student interest in the project\r\n            projectService.registerStudentInterest(username, projectId);\r\n            // If there are no exceptions, return 200 OK\r\n            return ResponseEntity.ok().build();\r\n        } catch (IllegalStateException e) {\r\n            // Returns 403 Forbidden if the item has already been assigned.\r\n            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());\r\n        } catch (Exception e) {\r\n            // For other exceptions, return 500 Internal Server Error\r\n            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());\r\n        }\r\n    }\r\n\r\n    @GetMapping(\"/proposed-projects\")\r\n    public ResponseEntity<List<Project>> getProposedProjects(Authentication auth) {\r\n        String username = auth.getName();\r\n        try {\r\n            List<Project> projects = projectService.getProjectsProposedByStaff(username);\r\n            return ResponseEntity.ok(projects);\r\n        } catch (Exception e) {\r\n            return ResponseEntity.internalServerError().body(null);\r\n        }\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/controller/ProjectController.java b/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/controller/ProjectController.java
+--- a/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/controller/ProjectController.java	
++++ b/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/controller/ProjectController.java	
+@@ -1,13 +1,23 @@
+ package uk.ac.standrews.cs5031.group4.projectsserver.controller;
++<<<<<<< HEAD
+ 
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.http.HttpStatus;
+ import org.springframework.http.ResponseEntity;
+ import org.springframework.security.core.Authentication;
++=======
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.HttpStatus;
++import org.springframework.http.ResponseEntity;
++>>>>>>> origin/hd/project-list
+ import org.springframework.web.bind.annotation.*;
+ import uk.ac.standrews.cs5031.group4.projectsserver.entities.Project;
+ import uk.ac.standrews.cs5031.group4.projectsserver.service.ProjectService;
+ 
++<<<<<<< HEAD
++=======
++import java.security.Principal;
++>>>>>>> origin/hd/project-list
+ import java.util.List;
+ import java.util.Map;
+ 
+@@ -18,9 +28,16 @@
+     private ProjectService projectService;
+ 
+     @PostMapping("/register-interest")
++<<<<<<< HEAD
+     public ResponseEntity<?> registerInterest(@RequestBody Map<String, Object> payload, Authentication auth) {
+         // Get the username of the currently logged in user from the SecurityContext.
+         String username = auth.getName();
++=======
++    public ResponseEntity<?> registerInterest(@RequestBody Map<String, Object> payload, Principal principal) {
++        // Get the username of the currently logged in user from the SecurityContext.
++//        String username = principal.getName();
++        String username = "mm20";
++>>>>>>> origin/hd/project-list
+         // Get project_id from request body
+         int projectId = (Integer) payload.get("project_id");
+         try {
+@@ -38,8 +55,14 @@
+     }
+ 
+     @GetMapping("/proposed-projects")
++<<<<<<< HEAD
+     public ResponseEntity<List<Project>> getProposedProjects(Authentication auth) {
+         String username = auth.getName();
++=======
++    public ResponseEntity<List<Project>> getProposedProjects(Principal principal) {
++        //String username = principal.getName();
++        String username = "jbloggs";
++>>>>>>> origin/hd/project-list
+         try {
+             List<Project> projects = projectService.getProjectsProposedByStaff(username);
+             return ResponseEntity.ok(projects);
+Index: projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/entities/InterestedIn.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package uk.ac.standrews.cs5031.group4.projectsserver.entities;\r\n\r\nimport jakarta.persistence.Entity;\r\nimport jakarta.persistence.Table;\r\nimport jakarta.persistence.Id;\r\nimport jakarta.persistence.IdClass;\r\nimport jakarta.persistence.ManyToOne;\r\nimport jakarta.persistence.JoinColumn;\r\n\r\n@Entity\r\n@Table(name = \"interested_in\")\r\n@IdClass(InterestedInId.class)\r\npublic class InterestedIn {\r\n\r\n    @Id\r\n    @ManyToOne\r\n    @JoinColumn(name = \"student_username\", referencedColumnName = \"username\")\r\n    private User student;\r\n\r\n    @Id\r\n    @ManyToOne\r\n    @JoinColumn(name = \"project_id\", referencedColumnName = \"id\")\r\n    private Project project;\r\n\r\n    public InterestedIn() {\r\n    }\r\n\r\n    // Getters and setters\r\n    public User getStudent() {\r\n        return student;\r\n    }\r\n\r\n    public void setStudent(User student) {\r\n        this.student = student;\r\n    }\r\n\r\n    public Project getProject() {\r\n        return project;\r\n    }\r\n\r\n    public void setProject(Project project) {\r\n        this.project = project;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/entities/InterestedIn.java b/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/entities/InterestedIn.java
+--- a/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/entities/InterestedIn.java	
++++ b/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/entities/InterestedIn.java	
+@@ -4,6 +4,10 @@
+ import jakarta.persistence.Table;
+ import jakarta.persistence.Id;
+ import jakarta.persistence.IdClass;
++<<<<<<< HEAD
++=======
++import jakarta.persistence.Column;
++>>>>>>> origin/hd/project-list
+ import jakarta.persistence.ManyToOne;
+ import jakarta.persistence.JoinColumn;
+ 
+Index: projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/service/ProjectService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package uk.ac.standrews.cs5031.group4.projectsserver.service;\r\n\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.transaction.annotation.Transactional;\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedIn;\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedInId;\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.entities.Project;\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.entities.User;\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.repository.InterestedInRepository;\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.repository.ProjectRepository;\r\nimport uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;\r\n\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class ProjectService {\r\n\r\n    @Autowired\r\n    private ProjectRepository projectRepository;\r\n\r\n    @Autowired\r\n    private UserRepository userRepository;\r\n\r\n    @Autowired\r\n    private InterestedInRepository interestedInRepository;\r\n\r\n    @Transactional\r\n    public void registerStudentInterest(String username, int projectId) {\r\n        User student = userRepository.findById(username).orElseThrow(() -> new IllegalStateException(\"User does not exist\"));\r\n        Project project = projectRepository.findById(String.valueOf(projectId)).orElseThrow(() -> new IllegalStateException(\"Project does not exist\"));\r\n        InterestedInId id = new InterestedInId();\r\n        id.setStudent(username);\r\n        id.setProject(projectId);\r\n        if (interestedInRepository.existsById(id)) {\r\n            throw new IllegalStateException(\"Student has already registered interest in this project\");\r\n        }\r\n        InterestedIn newInterest = new InterestedIn();\r\n        newInterest.setStudent(student);\r\n        newInterest.setProject(project);\r\n        interestedInRepository.save(newInterest); // Preserving student interest in the programme\r\n    }\r\n\r\n    public List<Project> getProjectsProposedByStaff(String username) {\r\n        // Call the repository method directly to get all the items proposed by the faculty member\r\n        List<Project> projects = projectRepository.findByProposedByStaffUsername(username);\r\n\r\n        return projects;\r\n    }\r\n\r\n}\r\n
+===================================================================
+diff --git a/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/service/ProjectService.java b/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/service/ProjectService.java
+--- a/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/service/ProjectService.java	
++++ b/projects-server/src/main/java/uk/ac/standrews/cs5031/group4/projectsserver/service/ProjectService.java	
+@@ -3,6 +3,10 @@
+ import org.springframework.stereotype.Service;
+ 
+ import org.springframework.beans.factory.annotation.Autowired;
++<<<<<<< HEAD
++=======
++import org.springframework.stereotype.Service;
++>>>>>>> origin/hd/project-list
+ import org.springframework.transaction.annotation.Transactional;
+ import uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedIn;
+ import uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedInId;

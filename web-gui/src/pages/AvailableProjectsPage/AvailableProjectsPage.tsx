@@ -1,4 +1,5 @@
 import { Content } from "@components/Content";
+import { StyledLink } from "@components/Link";
 import { useApiRequest } from "@hooks/use-api-request";
 import { Project, ProjectSchema } from "@model/project";
 import { useEffect, useState } from "react";
@@ -27,9 +28,9 @@ export function AvailableProjectsPage() {
                 {projects.map((project) => (
                     <li key={project.id}>
                         <h2>
-                            <Link to={`/student/projects/${project.id}`}>
+                            <StyledLink to={`/student/projects/${project.id}`}>
                                 {project.name}
-                            </Link>
+                            </StyledLink>
                         </h2>
                         <span>Proposed by {project.proposed_by.name}</span>
                     </li>

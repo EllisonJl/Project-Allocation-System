@@ -1,4 +1,5 @@
 import { Content } from "@components/Content";
+import { StyledLink } from "@components/Link";
 import { UserContext } from "@components/UserContext";
 import { useApiRequest } from "@hooks/use-api-request";
 import { Project, ProjectSchema } from "@model/project";
@@ -57,7 +58,7 @@ export function StudentProjectPage() {
 
     return (
         <Content>
-            <Link to="/student/available-projects">All projects</Link>
+            <StyledLink to="/student/available-projects">All projects</StyledLink>
             <h1>{project.name}</h1>
             <span>Proposed by {project.proposed_by.name}</span>
             <p>{project.description}</p>

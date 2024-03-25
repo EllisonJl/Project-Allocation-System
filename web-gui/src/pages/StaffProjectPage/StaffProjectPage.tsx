@@ -1,4 +1,5 @@
 import { Content } from "@components/Content";
+import { StyledLink } from "@components/Link";
 import { useApiRequest } from "@hooks/use-api-request";
 import { Project, ProjectSchema } from "@model/project";
 import { useEffect, useState } from "react";
@@ -49,7 +50,7 @@ export function StaffProjectPage() {
 
     return (
         <Content>
-            <Link to="/staff/proposed-projects">All projects</Link>
+            <StyledLink to="/staff/proposed-projects">All projects</StyledLink>
             <h1>{project.name}</h1>
             <p>{project.description}</p>
 

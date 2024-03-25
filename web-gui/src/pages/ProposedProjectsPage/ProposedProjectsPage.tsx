@@ -1,4 +1,5 @@
 import { Content } from "@components/Content";
+import { StyledLink } from "@components/Link";
 import { useApiRequest } from "@hooks/use-api-request";
 import { Project, ProjectSchema } from "@model/project";
 import { useEffect, useState } from "react";
@@ -21,15 +22,15 @@ export function ProposedProjectsPage() {
         <Content>
             <h1>Proposed projects</h1>
 
-            <Link to="/staff/new-project">Propose new project</Link>
+            <StyledLink to="/staff/new-project">Propose new project</StyledLink>
 
             <ul>
                 {projects.map((project) => (
                     <li key={project.id}>
                         <h2>
-                            <Link to={`/staff/projects/${project.id}`}>
+                            <StyledLink to={`/staff/projects/${project.id}`}>
                                 {project.name}
-                            </Link>
+                            </StyledLink>
                         </h2>
                         <div>
                             {project.assigned_to !== null ? (

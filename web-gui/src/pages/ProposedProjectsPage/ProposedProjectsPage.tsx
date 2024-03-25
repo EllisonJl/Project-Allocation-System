@@ -31,11 +31,15 @@ export function ProposedProjectsPage() {
                             </Link>
                         </h2>
                         <div>
-                            <span>
-                                {project.interested_students.length} interested
-                            </span>
-                            {project.assigned_to !== null && (
-                                <span>Assigned to {project.assigned_to.name}</span>
+                            {project.assigned_to !== null ? (
+                                <span>
+                                    Assigned to {project.assigned_to.name}
+                                </span>
+                            ) : (
+                                <span>
+                                    {project.interested_students.length}{" "}
+                                    interested
+                                </span>
                             )}
                         </div>
                     </li>

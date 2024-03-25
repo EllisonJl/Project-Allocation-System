@@ -1,3 +1,4 @@
+import { StyledLink } from "@components/Link";
 import { RequiresAuth } from "@components/RequiresAuth";
 import { UserContext } from "@components/UserContext";
 import { PropsWithChildren, useContext } from "react";
@@ -30,7 +31,7 @@ function AccessDeniedPage({ requiredRole }: AccessDeniedPageProps) {
             <p>You must be a {requiredRole} to access this page.</p>
 
             <p>
-                <Link to="/">Go home</Link>
+                <StyledLink to="/">Go home</StyledLink>
             </p>
         </div>
     );

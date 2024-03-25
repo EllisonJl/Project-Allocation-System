@@ -1,3 +1,4 @@
+import { Content } from "@components/Content";
 import { LoginForm } from "@components/LoginForm";
 import { UserDispatchContext } from "@components/UserContext";
 import { useApiRequest } from "@hooks/use-api-request";
@@ -61,13 +62,13 @@ export function LoginPage() {
     }
 
     return (
-        <>
+        <Content>
             <h1>Log in</h1>
 
             <LoginForm onSubmit={login} />
 
             {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        </>
+        </Content>
     );
 }
 

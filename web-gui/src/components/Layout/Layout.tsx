@@ -1,6 +1,6 @@
+import { StyledLink } from "@components/Link";
 import { UserContext } from "@components/UserContext";
 import { PropsWithChildren, useContext } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export function Layout({ children }: PropsWithChildren) {
@@ -12,7 +12,7 @@ export function Layout({ children }: PropsWithChildren) {
                 <LoggedInAs>
                     Logged in as {user?.name} ({user?.role})
                 </LoggedInAs>
-                <Link to="/login">Log in as someone else</Link>
+                <StyledLink to="/login">Log in as someone else</StyledLink>
             </Nav>
             {children}
         </>

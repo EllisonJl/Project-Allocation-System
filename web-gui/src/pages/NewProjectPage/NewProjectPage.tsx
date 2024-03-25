@@ -1,3 +1,5 @@
+import { Content } from "@components/Content";
+import { StyledLink } from "@components/Link";
 import { ProjectForm } from "@components/ProjectForm";
 import { useApiRequest } from "@hooks/use-api-request";
 import { ProjectSchema } from "@model/project";
@@ -26,12 +28,12 @@ export function NewProjectPage() {
     }
 
     return (
-        <>
-            <Link to="/staff/proposed-projects">All projects</Link>
+        <Content>
+            <StyledLink to="/staff/proposed-projects">All projects</StyledLink>
 
             <h1>Propose new project</h1>
 
             <ProjectForm onSubmit={submitProject} />
-        </>
+        </Content>
     );
 }

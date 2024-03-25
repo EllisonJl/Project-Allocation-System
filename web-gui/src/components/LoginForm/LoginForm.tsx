@@ -1,5 +1,6 @@
+import { Form } from "@components/Form";
+import { TextInput } from "@components/FormInputs";
 import { FormEvent, useState } from "react";
-import styled from "styled-components";
 
 type LoginFormProps = {
     onSubmit: (username: string, password: string) => void;
@@ -30,36 +31,9 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <Label>
-                Username:
-                <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-            </Label>
-            <Label>
-                Password:
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </Label>
-
-            <button type="submit">Log in</button>
-
-            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        </form>
+        <Form onSubmit={handleSubmit} submitActionText="Log in" error={errorMessage}>
+            <TextInput label="Username:" value={username} setValue={setUsername} />
+            <TextInput type="password" label="Password:" value={password} setValue={setPassword} />
+        </Form>
     );
 }
-
-const Label = styled.label`
-    display: block;
-`;
-
-const ErrorMessage = styled.div`
-    color: red;
-    font-weight: bold;
-`;

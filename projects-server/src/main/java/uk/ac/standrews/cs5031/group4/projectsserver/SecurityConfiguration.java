@@ -23,51 +23,80 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import uk.ac.standrews.cs5031.group4.projectsserver.filters.JwtAuthFilter;
 import uk.ac.standrews.cs5031.group4.projectsserver.service.UserDetailsServiceImpl;
 
+/**
+ * Configuration class for Spring Security.
+ */
 @Configuration
-@EnableWebSecurity
-// Enables API routes to be secured with the @Secured("role-name") annotation
+@EnableWebSecurity // Enables Spring Security for the application.
+// Enables securing API routes with the @Secured("role-name") annotation.
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
 
-    @Autowired
+    @Autowired // Automatically injects an instance of JwtAuthFilter.
     JwtAuthFilter jwtAuthFilter;
 
+    /**
+     * Configures the security filter chain.
+     *
+     * @param httpSecurity The HttpSecurity object to configure security settings.
+     * @return The configured SecurityFilterChain.
+     * @throws Exception If an error occurs during configuration.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(
                         (requests) -> requests
-                                // allow access to the H2 database console without logging in
+                                // Allow access to the H2 database console without logging in.
                                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                                // Permit access to the login endpoint without authentication.
                                 .requestMatchers("/login").permitAll()
+                                // Require authentication for all other requests.
                                 .anyRequest().authenticated())
+                // Set session management policy to stateless to avoid creating sessions.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Set the authentication provider to use.
                 .authenticationProvider(authenticationProvider())
+                // Add JwtAuthFilter before UsernamePasswordAuthenticationFilter in the filter chain.
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                // This ensures a 401 Unauthorized response is correctly returned when the user
-                // is not logged in,
-                // instead of a 403 Forbidden, which should only occur when they are logged in
-                // but have the wrong role.
+                // Set the exception handler for unauthorized access.
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
 
+        // Disable frame options for security reasons.
         httpSecurity.headers((headers) -> headers.frameOptions((opts) -> opts.disable()));
 
+        // Disable CSRF protection.
         httpSecurity.csrf(csrf -> csrf.disable());
 
-        return httpSecurity.build();
+        return httpSecurity.build(); // Return the configured SecurityFilterChain.
     }
 
+    /**
+     * Creates and returns an instance of UserDetailsService.
+     *
+     * @return An instance of UserDetailsServiceImpl.
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
 
+    /**
+     * Creates and returns an instance of PasswordEncoder.
+     *
+     * @return An instance of BCryptPasswordEncoder.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Creates and returns an instance of AuthenticationProvider.
+     *
+     * @return An instance of DaoAuthenticationProvider.
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -76,6 +105,13 @@ public class SecurityConfiguration {
         return authProvider;
     }
 
+    /**
+     * Retrieves the AuthenticationManager from AuthenticationConfiguration.
+     *
+     * @param config The AuthenticationConfiguration object.
+     * @return The AuthenticationManager.
+     * @throws Exception If an error occurs while retrieving the AuthenticationManager.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

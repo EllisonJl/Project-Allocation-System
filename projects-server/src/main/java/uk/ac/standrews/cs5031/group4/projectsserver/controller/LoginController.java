@@ -18,10 +18,14 @@ import uk.ac.standrews.cs5031.group4.projectsserver.service.JwtService;
 public class LoginController {
     /**
      * Authentication manager used for checking the username and password.
+     * This bean is automatically injected by Spring.
      */
     @Autowired
     private AuthenticationManager authManager;
 
+    /**
+     * Repository for accessing user data.
+     */
     @Autowired
     private UserRepository userRepository;
 
@@ -31,20 +35,33 @@ public class LoginController {
     @Autowired
     private JwtService jwtService;
 
+    /**
+     * Endpoint for user authentication.
+     *
+     * @param requestBody The request body containing username and password.
+     * @return ResponseEntity with login response body and status.
+     */
     @PostMapping("/login")
     public ResponseEntity<LoginResponseBody> authenticate(@RequestBody LoginRequestBody requestBody) {
-        // authenticate the user by the username and password in the request body
+        // Authenticate the user by the username and password in the request body
         Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestBody.getUsername(), requestBody.getPassword()));
 
         if (auth.isAuthenticated()) {
-            // get the User object for the user who just authenticated
+            // Get the User object for the user who just authenticated
             User user = userRepository.findById(auth.getName()).orElseThrow(
                     () -> new IllegalStateException("The user must exist since we authenticated successfully."));
-            LoginResponseBody response = new LoginResponseBody(jwtService.generateToken(requestBody.getUsername()),
-                    user.getName(), user.getRole());
+
+            // Generate JWT token for the authenticated user
+            String token = jwtService.generateToken(requestBody.getUsername());
+
+            // Create login response body with token, user name, and role
+            LoginResponseBody response = new LoginResponseBody(token, user.getName(), user.getRole());
+
+            // Return OK response with login response body
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
+            // Return UNAUTHORIZED response if authentication failed
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }

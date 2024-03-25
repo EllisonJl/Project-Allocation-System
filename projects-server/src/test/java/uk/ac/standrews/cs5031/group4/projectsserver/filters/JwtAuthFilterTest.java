@@ -58,6 +58,12 @@ public class JwtAuthFilterTest {
         SecurityContextHolder.clearContext(); // Ensure security context is clean before each test
     }
 
+    /**
+     * This method tests the behavior of the doFilterInternal() method in the JwtAuthenticationFilter class
+     * when a valid token is provided. It verifies that the authentication is set correctly.
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     public void testDoFilterInternal_ValidToken_SetsAuthentication() throws Exception {
         String username = "testUser";
@@ -71,11 +77,18 @@ public class JwtAuthFilterTest {
 
         jwtAuthFilter.doFilterInternal(request, response, filterChain);
 
+
         verify(filterChain).doFilter(request, response); // Verify that filter chain is continued
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
         assertEquals(username, SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
+    /**
+     * This method tests the behavior of the doFilterInternal() method in the JwtAuthenticationFilter class
+     * when an invalid token is provided. It verifies that the authentication is not set.
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     public void testDoFilterInternal_InvalidToken_DoesNotSetAuthentication() throws Exception {
         String token = "invalidToken";
@@ -89,6 +102,10 @@ public class JwtAuthFilterTest {
         assertNull(SecurityContextHolder.getContext().getAuthentication()); // Authentication should not be set
     }
 
+    /**
+     * This method tests the behavior of the loadUserByUsername() method in the UserDetailsServiceImpl class
+     * when the user is not found. It verifies that UsernameNotFoundException is thrown.
+     */
     @Test
     public void loadUserByUsername_UserNotFound_ShouldThrowUsernameNotFoundException() {
         String nonExistingUsername = "nonExistingUser";
@@ -99,16 +116,28 @@ public class JwtAuthFilterTest {
         });
     }
 
+    /**
+     * This method tests the behavior of the doFilterInternal() method in the JwtAuthenticationFilter class
+     * when there is no Authorization header. It verifies that the authentication is not set.
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     public void testDoFilterInternal_NoAuthorizationHeader_DoesNotSetAuthentication() throws Exception {
-        when(request.getHeader("Authorization")).thenReturn(null); // 模拟没有Authorization头
+        when(request.getHeader("Authorization")).thenReturn(null); // Simulate no Authorization header
 
         jwtAuthFilter.doFilterInternal(request, response, filterChain);
 
-        verify(filterChain).doFilter(request, response); // 确认过滤链继续执行
-        assertNull(SecurityContextHolder.getContext().getAuthentication()); // 确认没有设置Authentication
+        verify(filterChain).doFilter(request, response); // Verify that filter chain continues execution
+        assertNull(SecurityContextHolder.getContext().getAuthentication()); // Verify that authentication is not set
     }
 
+    /**
+     * This method tests the behavior of the doFilterInternal() method in the JwtAuthenticationFilter class
+     * when an invalid Authorization header format is provided. It verifies that the authentication is not set.
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     public void testDoFilterInternal_InvalidAuthorizationHeaderFormat_DoesNotSetAuthentication() throws Exception {
         String invalidHeader = "Invalid " + "token";
@@ -121,6 +150,12 @@ public class JwtAuthFilterTest {
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 
+    /**
+     * This method tests the behavior of the doFilterInternal() method in the JwtAuthenticationFilter class
+     * when the user is already authenticated. It verifies that the existing authentication is not overridden.
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     public void testDoFilterInternal_AlreadyAuthenticated_DoesNotOverrideAuthentication() throws Exception {
         String username = "testUser";
@@ -128,7 +163,8 @@ public class JwtAuthFilterTest {
         UserDetails userDetails = new User(username, "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
         UsernamePasswordAuthenticationToken existingAuth = new UsernamePasswordAuthenticationToken("existingUser", null);
 
-        SecurityContextHolder.getContext().setAuthentication(existingAuth); // Set existing authentication
+        SecurityContextHolder.getContext().setAuthentication(existingAuth);
+
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
         when(jwtService.extractUsername(token)).thenReturn(username);
         when(userDetailsServiceImpl.loadUserByUsername(username)).thenReturn(userDetails);
@@ -139,6 +175,12 @@ public class JwtAuthFilterTest {
         assertEquals(existingAuth, SecurityContextHolder.getContext().getAuthentication()); // Existing authentication remains
     }
 
+    /**
+     * This method tests the behavior of the doFilterInternal() method in the JwtAuthenticationFilter class
+     * when token validation fails. It verifies that the authentication is not set.
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     public void testDoFilterInternal_TokenValidationFails_DoesNotSetAuthentication() throws Exception {
         String username = "testUser";
@@ -155,6 +197,5 @@ public class JwtAuthFilterTest {
         verify(filterChain).doFilter(request, response); // Verify filter chain continues
         assertNull(SecurityContextHolder.getContext().getAuthentication()); // Authentication should not be set
     }
-
 
 }

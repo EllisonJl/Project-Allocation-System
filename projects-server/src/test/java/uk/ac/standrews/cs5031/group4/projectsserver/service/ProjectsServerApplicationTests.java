@@ -1,3 +1,6 @@
+/**
+ * This class contains unit tests for the functionality provided by the ProjectsServerApplication class.
+ */
 package uk.ac.standrews.cs5031.group4.projectsserver.service;
 
 import org.junit.jupiter.api.Test;
@@ -32,33 +35,58 @@ public class ProjectsServerApplicationTests {
     @Mock
     private ProjectRepository projectRepository;
 
+    /**
+     * Initializes mock objects before each test method execution.
+     */
     public ProjectsServerApplicationTests() {
         MockitoAnnotations.openMocks(this);
     }
 
+    /**
+     * Test case to verify the behavior of the helloWorld() method.
+     */
     @Test
     public void testHelloWorld() {
         assertEquals("Hello world!", projectsServerApplication.helloWorld());
     }
 
+    /**
+     * Test case to verify the behavior of the secret() method.
+     */
     @Test
     public void testSecret() {
         assertEquals("Top secret!", projectsServerApplication.secret());
     }
 
+    /**
+     * Test case to verify the behavior of the users() method.
+     */
     @Test
     public void testUsers() {
+        // Given
         when(userRepository.findAll()).thenReturn(Collections.singletonList(new User()));
+
+        // When
         List<User> users = projectsServerApplication.users();
+
+        // Then
         assertEquals(1, users.size());
         verify(userRepository).findAll();
     }
 
+    /**
+     * Test case to verify the behavior of the role() method.
+     */
     @Test
     public void testRole() {
+        // Given
         Authentication auth = new UsernamePasswordAuthenticationToken("user", "password",
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+
+        // When
         List<String> roles = projectsServerApplication.role(auth);
+
+        // Then
         assertEquals(1, roles.size());
         assertEquals("ROLE_USER", roles.get(0));
     }

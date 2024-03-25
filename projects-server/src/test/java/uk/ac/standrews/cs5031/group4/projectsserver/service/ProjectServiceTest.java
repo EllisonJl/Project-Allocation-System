@@ -29,9 +29,13 @@ public class ProjectServiceTest {
     @Autowired
     private InterestedInRepository interestedInRepository;
 
+    /**
+     * This method tests the behavior of the registerStudentInterest() method in the ProjectService class
+     * when the student interest is already registered for a project. It verifies that an IllegalStateException
+     * is thrown with an appropriate error message.
+     */
     @Test
     void registerStudentInterest_WhenInterestAlreadyRegistered_ThrowsException() {
-        // 创建和保存用户和项目
         User staff = new User("staff", "password", "Staff", "staff");
         User student = new User("student1", "password", "Student One", "student");
         Project project = new Project("Project", "description", staff);
@@ -40,17 +44,21 @@ public class ProjectServiceTest {
         User savedStudent = userRepository.save(student);
         Project savedProject = projectRepository.save(project);
 
-        // 模拟已存在的兴趣记录
         InterestedIn existingInterest = new InterestedIn();
         existingInterest.setStudent(savedStudent);
         existingInterest.setProject(savedProject);
-        InterestedIn savedInterest = interestedInRepository.save(existingInterest); // 假设这个方法保存兴趣并返回保存后的实体
+        InterestedIn savedInterest = interestedInRepository.save(existingInterest);
 
-        // 尝试为相同的学生和项目注册兴趣，应该抛出异常
         assertThrows(IllegalStateException.class, () -> {
             projectService.registerStudentInterest(savedStudent.getUsername(), savedProject.getId());
         }, "Student has already registered interest in this project");
     }
+
+    /**
+     * This method tests the behavior of the acceptStudent() method in the ProjectService class
+     * when a student is successfully accepted for a project. It verifies that the student
+     * is assigned to the project.
+     */
     @Test
     void acceptStudent_ShouldAcceptStudentSuccessfully() {
         User user = new User("student1", "password", "Student One", "student");
@@ -59,19 +67,22 @@ public class ProjectServiceTest {
 
         userRepository.save(user);
         userRepository.save(staff);
-
         projectRepository.save(project);
         projectService.registerStudentInterest("student1", project.getId());
 
         projectService.acceptStudent(project.getId(), "student1");
 
         project = projectRepository.findById(project.getId());
-
         assertNotNull(project.getAssignedStudent());
         assertEquals("student1", project.getAssignedStudent().getUsername());
         assertTrue(true);
     }
 
+    /**
+     * This method tests the behavior of the acceptStudent() method in the ProjectService class
+     * when a student is accepted for a project successfully. It verifies that the student
+     * is assigned to the project.
+     */
     @Test
     public void acceptStudent_ShouldAssignStudentToProject() {
         User staff = new User("staff", "password", "Staff", "staff");
@@ -82,19 +93,20 @@ public class ProjectServiceTest {
         userRepository.save(mockStudent);
         userRepository.save(staff);
         projectRepository.save(mockProject);
-
         projectService.registerStudentInterest("studentUsername",
                 mockProject.getId());
 
         projectService.acceptStudent(mockProject.getId(), "studentUsername");
 
-        // reload the project from the repository
         mockProject = projectRepository.findById(mockProject.getId());
-
         assertEquals("studentUsername",
                 mockProject.getAssignedStudent().getUsername());
     }
 
+    /**
+     * This method tests the behavior of the proposeProject() method in the ProjectService class
+     * when a user exists and proposes a project. It verifies that the project is created and saved.
+     */
     @Test
     public void proposeProject_ShouldCreateAndSaveProjectWhenUserExists() {
         String username = "existingUser";
@@ -109,6 +121,10 @@ public class ProjectServiceTest {
         assertEquals("Description", result.getDescription());
     }
 
+    /**
+     * This method tests the behavior of the proposeProject() method in the ProjectService class
+     * when a user does not exist. It verifies that an IllegalStateException is thrown.
+     */
     @Test
     void proposeProject_ShouldThrowExceptionWhenUserNotFound() {
         String username = "nonExistingUser";
@@ -117,6 +133,12 @@ public class ProjectServiceTest {
             projectService.proposeProject("Test Project", "Description", username);
         });
     }
+
+    /**
+     * This method tests the behavior of the acceptStudent() method in the ProjectService class
+     * when a project already has a student assigned to it. It verifies that an IllegalStateException
+     * is thrown with an appropriate error message.
+     */
     @Test
     void acceptStudent_ShouldThrowExceptionWhenProjectAlreadyAssigned() {
         User staff = new User("staff", "password", "Staff", "staff");
@@ -135,26 +157,32 @@ public class ProjectServiceTest {
         });
     }
 
+    /**
+     * This method tests the behavior of the registerStudentInterest() method in the ProjectService class
+     * when the project does not exist. It verifies that an IllegalStateException is thrown
+     * with an appropriate error message.
+     */
     @Test
     public void registerStudentInterest_ProjectDoesNotExist_ThrowsException() {
-        // 设置初始条件
         String studentUsername = "student1";
         User student = new User(studentUsername, "password", "Student One", "student");
         userRepository.save(student);
 
-        // 尝试使用一个不存在的projectId
         int nonExistingProjectId = 999;
 
-        // 验证执行registerStudentInterest时因为项目不存在而抛出异常
         Exception exception = assertThrows(IllegalStateException.class, () -> {
             projectService.registerStudentInterest(studentUsername, nonExistingProjectId);
         });
         assertTrue(exception.getMessage().contains("Project does not exist"));
     }
 
+    /**
+     * This method tests the behavior of the acceptStudent() method in the ProjectService class
+     * when a project already has a student assigned to it. It verifies that an IllegalStateException
+     * is thrown with an appropriate error message.
+     */
     @Test
     public void acceptStudent_ProjectAlreadyAssigned_ThrowsException() {
-        // 创建并保存项目及学生
         User staff = new User("staff", "password", "Staff", "staff");
         User student1 = new User("student1", "password", "Student One", "student");
         Project project = new Project("Project", "description", staff);
@@ -165,11 +193,9 @@ public class ProjectServiceTest {
         project.setAssignedStudent(student1);
         project = projectRepository.save(project);
 
-        // 再创建一个新的学生尝试分配同一个项目
         User student2 = new User("student2", "password", "Student Two", "student");
         userRepository.save(student2);
 
-        // 验证执行acceptStudent时因为项目已分配而抛出异常
         Project finalProject = project;
         Exception exception = assertThrows(IllegalStateException.class, () -> {
             projectService.acceptStudent(finalProject.getId(), student2.getUsername());

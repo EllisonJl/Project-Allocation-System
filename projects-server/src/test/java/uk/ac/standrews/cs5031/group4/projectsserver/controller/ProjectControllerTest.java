@@ -52,8 +52,14 @@ class ProjectControllerTest {
         // verify(projectRepository, Mockito.times(1)).findByAssignedStudentIsNull();
     }
 
+    /**
+     * This method tests the behavior of the getAvailableProjects() method in the ProjectController class
+     * when projects are available. It verifies that the response entity contains the expected project list
+     * with HTTP status code OK.
+     */
     @Test
     void getAvailableProjectsWhenProjectsAreAvailable() {
+        // Given
         User user = new User("jbloggs", "", "Joe Bloggs", "staff");
         Project project = new Project("Foobar",
                 "This project aims to extend the Foobar project to add Gigatron features.", user, null);
@@ -61,15 +67,23 @@ class ProjectControllerTest {
         userRepository.save(user);
         projectRepository.save(project);
 
+        // When
         ResponseEntity<List<Project>> responseEntity = projectController.getAvailableProjects();
 
+        // Then
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertTrue(responseEntity.hasBody());
         assertTrue(responseEntity.getBody().contains(project));
     }
 
+    /**
+     * This method tests the behavior of the getProjectById() method in the ProjectController class
+     * when the project is present. It verifies that the response entity contains the expected project
+     * with HTTP status code OK.
+     */
     @Test
     void getProjectByIdWhenProjectIsPresent() {
+        // Given
         User user = new User("jbloggs", "", "Joe Bloggs", "staff");
         Project expectedProject = new Project("Foobar",
                 "This project aims to extend the Foobar project to add Gigatron features.",
@@ -78,38 +92,66 @@ class ProjectControllerTest {
         userRepository.save(user);
         projectRepository.save(expectedProject);
 
+        // When
         ResponseEntity<Project> responseEntity = projectController.getProjectById(Integer.toString(expectedProject.getId()));
 
+        // Then
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(expectedProject, responseEntity.getBody());
     }
 
+    /**
+     * This method tests the behavior of the getProjectById() method in the ProjectController class
+     * when the project is not present. It verifies that the response entity has HTTP status code
+     * NOT_FOUND and the body is null.
+     */
     @Test
     void getProjectByIdWhenProjectIsNotPresent() {
+        // Given
         int invalidId = 21;
 
+        // When
         ResponseEntity<Project> responseEntity = projectController.getProjectById(Integer.toString(invalidId));
+
+        // Then
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertNull(responseEntity.getBody());
     }
 
+    /**
+     * This method tests the behavior of the proposeProject() method in the ProjectController class
+     * when a staff user proposes a new project. It verifies that the created project is returned
+     * with HTTP status code CREATED.
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     @WithMockUser(username = "username", authorities = "staff")
     public void proposeProject_ShouldReturnCreatedProject() throws Exception {
+        // Given
         User mockUser = new User("username", "", "Name", "staff");
         userRepository.save(mockUser);
 
+        // When/Then
         mockMvc.perform(post("/projects")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Test Project\", \"description\":\"Description\"}"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Test Project\", \"description\":\"Description\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Test Project"))
                 .andExpect(jsonPath("$.description").value("Description"));
     }
 
+    /**
+     * This method tests the behavior of the acceptStudent() method in the ProjectController class
+     * when a staff user accepts a student for a project successfully. It verifies that the HTTP status
+     * code is OK.
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     @WithMockUser(authorities = "staff")
     public void acceptStudent_WhenSuccess_ReturnsOk() throws Exception {
+        // Given
         User user = new User("user1", "", "User One", "staff");
         Project mockProject = new Project("Test Project", "Description", user);
 
@@ -121,12 +163,20 @@ class ProjectControllerTest {
 
         projectService.registerStudentInterest(mockUser.getUsername(), mockProject.getId());
 
+        // When/Then
         mockMvc.perform(post("/projects/" + mockProject.getId() + "/accept-student")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"student_username\":\"studentUsername\"}"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"student_username\":\"studentUsername\"}"))
                 .andExpect(status().isOk());
     }
 
+    /**
+     * This method tests the behavior of the acceptStudent() method in the ProjectController class
+     * when a staff user fails to accept a student for a project. It verifies that the HTTP status
+     * code is BAD_REQUEST.
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     @WithMockUser(authorities = "staff")
     public void acceptStudent_WhenFailed_ReturnsBadRequest() throws Exception {
@@ -137,8 +187,9 @@ class ProjectControllerTest {
         projectRepository.save(mockProject);
 
         mockMvc.perform(post("/projects/" + mockProject.getId() + "/accept-student")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"student_username\":\"studentUsername\"}"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"student_username\":\"studentUsername\"}"))
                 .andExpect(status().isBadRequest());
     }
+
 }

@@ -1,7 +1,6 @@
 package uk.ac.standrews.cs5031.group4.projectsserver.service;
 
 import org.springframework.stereotype.Service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedIn;
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.InterestedInId;
@@ -25,6 +24,13 @@ public class ProjectService {
     @Autowired
     private InterestedInRepository interestedInRepository;
 
+    /**
+     * Registers student interest in a project.
+     *
+     * @param username  The username of the student.
+     * @param projectId The ID of the project.
+     * @throws IllegalStateException if the user or project does not exist, or if the student has already registered interest in the project.
+     */
     public void registerStudentInterest(String username, int projectId) {
         User student = userRepository.findById(username)
                 .orElseThrow(() -> new IllegalStateException("User does not exist"));
@@ -42,6 +48,12 @@ public class ProjectService {
         interestedInRepository.save(newInterest); // Preserving student interest in the programme
     }
 
+    /**
+     * Retrieves projects proposed by a staff member.
+     *
+     * @param username The username of the staff member.
+     * @return A list of projects proposed by the staff member.
+     */
     public List<Project> getProjectsProposedByStaff(String username) {
         // Call the repository method directly to get all the items proposed by the
         // faculty member
@@ -50,6 +62,15 @@ public class ProjectService {
         return projects;
     }
 
+    /**
+     * Proposes a new project.
+     *
+     * @param name        The name of the project.
+     * @param description The description of the project.
+     * @param username    The username of the staff member proposing the project.
+     * @return The proposed project.
+     * @throws IllegalStateException if the user is not found.
+     */
     public Project proposeProject(String name, String description, String username) {
         User user = userRepository.findById(username).orElseThrow(() -> new IllegalStateException("User not found"));
         Project project = new Project(name, description, user);
@@ -57,6 +78,13 @@ public class ProjectService {
         return result;
     }
 
+    /**
+     * Accepts a student for a project.
+     *
+     * @param projectId      The ID of the project.
+     * @param studentUsername The username of the student.
+     * @throws IllegalStateException if the project is already assigned, if the student hasn't registered interest for the project, or if the student does not exist.
+     */
     public void acceptStudent(int projectId, String studentUsername) {
         Project project = projectRepository.findById(String.valueOf(projectId))
                 .orElseThrow(() -> new IllegalStateException("Project does not exist"));

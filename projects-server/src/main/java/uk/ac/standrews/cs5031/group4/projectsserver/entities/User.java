@@ -68,6 +68,9 @@ public class User {
         this.role = role;
     }
 
+    public User(String staffName) {
+    }
+
     /**
      * Set the username of the user.
      *
@@ -149,6 +152,16 @@ public class User {
         return interestedInProjects;
     }
 
+    /**
+     * Sets the password hash for the user.
+     *
+     * @param password_hash The password hash to set.
+     */
+    public void setPassword_hash(String password_hash) {
+        this.password_hash = password_hash;
+    }
+
+
     // Equals method to check equality based on username, name, and role
     @Override
     public boolean equals(Object o) {
@@ -173,4 +186,5 @@ public class User {
         // Compares username, name, and role for equality
         return this.username.equals(u.username) && this.name.equals(u.name) && this.role.equals(u.role);
     }
+
 }

@@ -193,6 +193,15 @@ class ProjectControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     * Test method to register interest when a project exists and the user is a student.
+     * <p>
+     * This method sets up test data by creating a user and a project, saves them to the database,
+     * and then performs the test action by sending a POST request to register interest in the project.
+     * It expects the HTTP status code to be OK (200).
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     @WithMockUser(username = "studentUser", authorities = "student")
     public void registerInterest_WhenProjectExists_AndUserIsStudent() throws Exception {
@@ -209,6 +218,15 @@ class ProjectControllerTest {
                 .andExpect(status().isOk());
     }
 
+    /**
+     * Test method to get proposed projects when projects exist.
+     * <p>
+     * This method sets up test data by creating a user, two projects, saves them to the database,
+     * and then performs the test action by sending a GET request to retrieve proposed projects.
+     * It expects the HTTP status code to be OK (200) and verifies the names of the projects returned.
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     @WithMockUser(username = "staffUser", authorities = "staff")
     public void getProposedProjects_WhenProjectsExist() throws Exception {
@@ -228,6 +246,14 @@ class ProjectControllerTest {
                 .andExpect(jsonPath("$.[1].name").value("Project 2"));
     }
 
+    /**
+     * Test method to register interest when not logged in.
+     * <p>
+     * This method performs the test action by sending a POST request to register interest in a project
+     * when the user is not logged in. It expects the HTTP status code to be UNAUTHORIZED (401).
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     public void registerInterest_WhenNotLoggedIn_ShouldReturnUnauthorized() throws Exception {
         mockMvc.perform(post("/register-interest")
@@ -236,28 +262,52 @@ class ProjectControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    /**
+     * Test method to register interest when already registered.
+     * <p>
+     * This method performs the test action by sending a POST request to register interest in a project
+     * when the user is already registered for the project. It expects the HTTP status code to be FORBIDDEN (403).
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     @WithMockUser(username = "studentUser", authorities = "student")
     public void registerInterest_WhenAlreadyRegistered_ShouldReturnForbidden() throws Exception {
-        // 假设学生已经对项目ID为1的项目注册过兴趣
+        // Assume the student has already registered interest in the project with ID 1
         mockMvc.perform(post("/register-interest")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"project_id\":1}")) // 确保这设置反映在你的测试数据库中
-                .andExpect(status().isForbidden()); // 期待403禁止状态
+                        .content("{\"project_id\":1}")) // Ensure this setup reflects in your test database
+                .andExpect(status().isForbidden()); // Expect 403 Forbidden status
     }
 
-
-
+    /**
+     * Test method to get proposed projects when not logged in.
+     * <p>
+     * This method performs the test action by sending a GET request to retrieve proposed projects
+     * when the user is not logged in. It expects the HTTP status code to be UNAUTHORIZED (401).
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     public void getProposedProjects_WhenNotLoggedIn_ShouldReturnUnauthorized() throws Exception {
         mockMvc.perform(get("/proposed-projects"))
                 .andExpect(status().isUnauthorized());
     }
 
+    /**
+     * Test method to get proposed projects when the user is a student.
+     * <p>
+     * This method performs the test action by sending a GET request to retrieve proposed projects
+     * when the user is logged in as a student. It expects the HTTP status code to be FORBIDDEN (403).
+     *
+     * @throws Exception if an error occurs during the test execution
+     */
     @Test
     @WithMockUser(username = "studentUser", authorities = "student")
     public void getProposedProjects_WhenUserIsStudent_ShouldReturnForbidden() throws Exception {
         mockMvc.perform(get("/proposed-projects"))
                 .andExpect(status().isForbidden());
     }
+
+
 }

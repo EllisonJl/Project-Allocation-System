@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
 import uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LoginControllerTest {
@@ -47,13 +48,13 @@ public class LoginControllerTest {
         LoginRequestBody request = new LoginRequestBody("joebloggs", "password1");
 
         mockMvc.perform(post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
     }
 
     /**
-     * When attempting to log in with invalid credentials, the log in should fail
+     * When attempting to log in with invalid credentials, the login should fail
      * and return Unauthorized.
      */
     @Test
@@ -61,8 +62,8 @@ public class LoginControllerTest {
         LoginRequestBody request = new LoginRequestBody("username", "password");
 
         mockMvc.perform(post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -93,7 +94,6 @@ public class LoginControllerTest {
     public void requestProtectedRouteWithUserWithCorrectRole() throws Exception {
         mockMvc.perform(get("/proposed-projects")).andExpect(status().isOk());
     }
-
 
     @Test
     public void unregisteredUserCannotLogin() throws Exception {

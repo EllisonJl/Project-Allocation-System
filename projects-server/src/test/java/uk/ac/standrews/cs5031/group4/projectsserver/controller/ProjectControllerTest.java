@@ -260,4 +260,5 @@ class ProjectControllerTest {
         mockMvc.perform(get("/proposed-projects"))
                 .andExpect(status().isForbidden());
     }
+
 }

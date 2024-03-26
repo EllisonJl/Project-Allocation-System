@@ -27,8 +27,6 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
-
     // Name of the project
     private String name;
 

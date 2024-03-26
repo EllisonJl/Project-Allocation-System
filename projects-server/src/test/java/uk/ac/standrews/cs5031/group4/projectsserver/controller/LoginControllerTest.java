@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import uk.ac.standrews.cs5031.group4.projectsserver.entities.User;
 import uk.ac.standrews.cs5031.group4.projectsserver.repository.UserRepository;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LoginControllerTest {

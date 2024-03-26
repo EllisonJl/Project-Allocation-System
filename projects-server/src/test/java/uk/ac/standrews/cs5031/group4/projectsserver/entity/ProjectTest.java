@@ -55,5 +55,4 @@ public class ProjectTest {
         assertEquals(project1, project2); // But they are considered equal based on your business logic
     }
 
-
 }

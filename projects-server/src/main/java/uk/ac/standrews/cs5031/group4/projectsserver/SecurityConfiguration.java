@@ -33,9 +33,7 @@ import uk.ac.standrews.cs5031.group4.projectsserver.service.UserDetailsServiceIm
 public class SecurityConfiguration {
 
     @Autowired // Automatically injects an instance of JwtAuthFilter.
-    JwtAuthFilter jwtAuthFilter;
-
-    /**
+    JwtAuthFilter jwtAuthFilter;/**
      * Configures the security filter chain.
      *
      * @param httpSecurity The HttpSecurity object to configure security settings.
